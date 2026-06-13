@@ -160,29 +160,7 @@
             activeBtn.classList.add('border-emerald-500', 'text-emerald-400');
         }
 
-        // 2. TOGGLE BRIGHT / DARK THEME MANAGER
-        const themeToggleBtn = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const themeText = document.getElementById('themeText');
-        const bodyElement = document.body;
-
-        themeToggleBtn.addEventListener('click', () => {
-            bodyElement.classList.toggle('light-theme');
-            
-            if (bodyElement.classList.contains('light-theme')) {
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'Dark Mode';
-                // Adjust text colors natively inside specific table modules for crisp readability
-                document.querySelectorAll('table tbody').forEach(el => el.classList.remove('text-slate-400'));
-                document.querySelectorAll('table tbody').forEach(el => el.classList.add('text-slate-700'));
-            } else {
-                themeIcon.textContent = '☀️';
-                themeText.textContent = 'Bright Mode';
-                document.querySelectorAll('table tbody').forEach(el => el.classList.remove('text-text-slate-700'));
-                document.querySelectorAll('table tbody').forEach(el => el.classList.add('text-slate-400'));
-            }
-        });
-
+       
         // 3. TELEMETRY DATA FETCH LOOPS
         async function fetchDashboardData() {
             try {
