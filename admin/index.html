@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SachetBank Administrative Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased p-8 transition-colors duration-300 dynamic-body">
+
+    <header class="mb-8 border-b border-slate-800 pb-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <span class="text-xs font-bold tracking-wider text-emerald-500 dark:text-emerald-400 uppercase">Internal Network Control</span>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white mt-1">SachetBank Cloud System Management Ledger</h1>
+        </div>
+        <button id="themeToggle" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800 transition shadow-sm cursor-pointer text-sm font-semibold max-w-fit">
+            <span id="themeIcon">🌙</span> <span id="themeText">Dark Mode</span>
+        </button>
+    </header>
+
+    <nav class="flex border-b border-slate-800 mb-6 gap-2 text-sm font-bold">
+        <button onclick="switchTab('aggregators')" id="tab-aggregators" class="tab-btn px-4 py-2.5 border-b-2 border-emerald-500 text-emerald-400 transition-all cursor-pointer">
+            Tab 1: Aggregator Registry
+        </button>
+        <button onclick="switchTab('donors')" id="tab-donors" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+            Tab 2: Donor Ledger
+        </button>
+        <button onclick="switchTab('tickets')" id="tab-tickets" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+            Tab 3: Evacuation Tickets
+        </button>
+    </nav>
+
+    <section id="panel-aggregators" class="tab-panel bg-slate-900 border border-slate-800 rounded-xl shadow-md p-6 overflow-hidden">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
+            <span class="w-2 h-4 bg-emerald-500 rounded mr-2.5"></span> Shop Terminals Registry
+        </h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-400">
+                <thead class="bg-slate-950 text-xs text-slate-200 uppercase font-mono tracking-wider border-b border-slate-800">
+                    <tr>
+                        <th class="px-4 py-3">Aggregator ID</th>
+                        <th class="px-4 py-3">Shop Name</th>
+                        <th class="px-4 py-3">Owner Phone</th>
+                        <th class="px-4 py-3">Street Address</th>
+                        <th class="px-4 py-3">Bank Name</th>
+                        <th class="px-4 py-3">Account Number</th>
+                        <th class="px-4 py-3 text-center">Scale</th>
+                        <th class="px-4 py-3 text-center">Sacks Held</th>
+                        <th class="px-4 py-3">Cash Wallet</th>
+                    </tr>
+                </thead>
+                <tbody id="aggregatorTableBody">
+                    <tr><td colspan="9" class="text-center py-4 text-slate-500 font-mono">Loading telemetry registry...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="panel-donors" class="tab-panel hidden bg-slate-900 border border-slate-800 rounded-xl shadow-md p-6 overflow-hidden">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
+            <span class="w-2 h-4 bg-amber-500 rounded mr-2.5"></span> Waste-Food Wallets Ledger
+        </h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-400">
+                <thead class="bg-slate-950 text-xs text-slate-200 uppercase font-mono tracking-wider border-b border-slate-800">
+                    <tr>
+                        <th class="px-4 py-3">Donor ID</th>
+                        <th class="px-4 py-3">Linked Terminal</th>
+                        <th class="px-4 py-3">Full Name</th>
+                        <th class="px-4 py-3">Phone Number</th>
+                        <th class="px-4 py-3">Email Address</th>
+                        <th class="px-4 py-3 text-center">Points Balance</th>
+                        <th class="px-4 py-3 text-center">Monthly Weight</th>
+                        <th class="px-4 py-3 text-center">All-Time Weight</th>
+                    </tr>
+                </thead>
+                <tbody id="donorTableBody">
+                    <tr><td colspan="8" class="text-center py-4 text-slate-500 font-mono">Loading digital ledger...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="panel-tickets" class="tab-panel hidden bg-slate-900 border border-slate-800 rounded-xl shadow-md p-6 overflow-hidden">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
+            <span class="w-2 h-4 bg-blue-500 rounded mr-2.5"></span> Logistics Evacuation Pipeline
+        </h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-400">
+                <thead class="bg-slate-950 text-xs text-slate-200 uppercase font-mono tracking-wider border-b border-slate-800">
+                    <tr>
+                        <th class="px-4 py-3">Ticket ID</th>
+                        <th class="px-4 py-3">Aggregator ID</th>
+                        <th class="px-4 py-3 text-center">Sack Count</th>
+                        <th class="px-4 py-3">Driver Assigned</th>
+                        <th class="px-4 py-3">Ticket Status</th>
+                        <th class="px-4 py-3">Date Created</th>
+                    </tr>
+                </thead>
+                <tbody id="ticketTableBody">
+                    <tr><td colspan="6" class="text-center py-4 text-slate-500 font-mono">Loading transit queues...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <style>
+        /* Light mode global overrides applied dynamically via root class controls */
+        .light-theme {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        .light-theme header, .light-theme nav {
+            border-color: #cbd5e1 !important;
+        }
+        .light-theme .tab-panel {
+            background-color: #ffffff !important;
+            border-color: #e2e8f0 !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+        .light-theme table thead {
+            background-color: #f1f5f9 !important;
+            color: #334155 !important;
+            border-color: #cbd5e1 !important;
+        }
+        .light-theme table tbody tr {
+            border-color: #f1f5f9 !important;
+        }
+        .light-theme table tbody tr:hover {
+            background-color: #f8fafc !important;
+        }
+        .light-theme #themeToggle {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+        }
+    </style>
+
+    <script>
+        const webhookUrl = 'https://api.presibo.com/sachetbank/webhook.php';
+
+        // 1. DYNAMIC TAB-SWITCHING SYSTEM
+        function switchTab(tabId) {
+            // Hide all tab content sections
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
+            // Remove active status colors from all navigation buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-emerald-500', 'text-emerald-400');
+                btn.classList.add('border-transparent', 'text-slate-400');
+            });
+
+            // Show selected panel section
+            document.getElementById(`panel-${tabId}`).classList.remove('hidden');
+            // Highlight current active tab button
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.remove('border-transparent', 'text-slate-400');
+            activeBtn.classList.add('border-emerald-500', 'text-emerald-400');
+        }
+
+        // 2. TOGGLE BRIGHT / DARK THEME MANAGER
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const bodyElement = document.body;
+
+        themeToggleBtn.addEventListener('click', () => {
+            bodyElement.classList.toggle('light-theme');
+            
+            if (bodyElement.classList.contains('light-theme')) {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Bright Mode';
+                // Adjust text colors natively inside specific table modules for crisp readability
+                document.querySelectorAll('table tbody').forEach(el => el.classList.remove('text-slate-400'));
+                document.querySelectorAll('table tbody').forEach(el => el.classList.add('text-slate-700'));
+            } else {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
+                document.querySelectorAll('table tbody').forEach(el => el.classList.remove('text-text-slate-700'));
+                document.querySelectorAll('table tbody').forEach(el => el.classList.add('text-slate-400'));
+            }
+        });
+
+        // 3. TELEMETRY DATA FETCH LOOPS
+        async function fetchDashboardData() {
+            try {
+                // Fetch Aggregators
+                let r1 = await fetch(webhookUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({admin_action: 'GET_AGGREGATORS'}) });
+                if (r1.ok) renderAggregators(await r1.json());
+
+                // Fetch Donors
+                let r2 = await fetch(webhookUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({admin_action: 'GET_DONORS'}) });
+                if (r2.ok) renderDonors(await r2.json());
+
+                // Fetch Tickets
+                let r3 = await fetch(webhookUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({admin_action: 'GET_TICKETS'}) });
+                if (r3.ok) renderTickets(await r3.json());
+
+            } catch (err) {
+                console.error("Dashboard engine network connection fault:", err);
+            }
+        }
+
+        function renderAggregators(data) {
+            const tbody = document.getElementById('aggregatorTableBody');
+            tbody.innerHTML = data.length ? '' : '<tr><td colspan="9" class="text-center py-4 text-slate-500">No registered terminal records found.</td></tr>';
+            data.forEach(row => {
+                const cash = row.Current_Cash_Wallet ? parseFloat(row.Current_Cash_Wallet).toLocaleString('en-NG', {minimumFractionDigits: 2}) : '0.00';
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-800 hover:bg-slate-800/40 font-medium">
+                        <td class="px-4 py-3 font-mono text-emerald-500 font-bold">${row.Aggregator_ID || '—'}</td>
+                        <td class="px-4 py-3 font-semibold">${row.Shop_Name || '—'}</td>
+                        <td class="px-4 py-3 font-mono">${row.Owner_Phone || '—'}</td>
+                        <td class="px-4 py-3 text-xs">${row.Street_Address || '—'}</td>
+                        <td class="px-4 py-3 text-xs">${row.Bank_Name || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.Account_Number || '—'}</td>
+                        <td class="px-4 py-3 text-center text-xs">${row.Scale_Issued || 'No'}</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.Large_Sacks_Held || 0}</td>
+                        <td class="px-4 py-3 font-bold text-emerald-600 dark:text-emerald-300 font-mono">₦${cash}</td>
+                    </tr>`;
+            });
+        }
+
+        function renderDonors(data) {
+            const tbody = document.getElementById('donorTableBody');
+            tbody.innerHTML = data.length ? '' : '<tr><td colspan="8" class="text-center py-4 text-slate-500">No registered donor records found.</td></tr>';
+            data.forEach(row => {
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-800 hover:bg-slate-800/40 font-medium">
+                        <td class="px-4 py-3 font-mono text-amber-600 dark:text-amber-400 font-bold">${row.Donor_ID || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.Linked_Terminal_ID || '—'}</td>
+                        <td class="px-4 py-3 font-semibold">${row.Full_Name || '—'}</td>
+                        <td class="px-4 py-3 font-mono">${row.Phone_Number || '—'}</td>
+                        <td class="px-4 py-3 text-xs">${row.Email_Address || '—'}</td>
+                        <td class="px-4 py-3 text-center font-bold text-amber-600 dark:text-amber-300 font-mono">${row.Current_Points_Balance || 0}</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.Monthly_Weight_KG || '0.00'} kg</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.All_Time_Weight_KG || '0.00'} kg</td>
+                    </tr>`;
+            });
+        }
+
+        function renderTickets(data) {
+            const tbody = document.getElementById('ticketTableBody');
+            tbody.innerHTML = data.length ? '' : '<tr><td colspan="6" class="text-center py-4 text-slate-500">No open evacuation workflows found.</td></tr>';
+            data.forEach(row => {
+                const statusColor = row.Ticket_Status === 'Pending' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-800 hover:bg-slate-800/40 font-medium">
+                        <td class="px-4 py-3 font-mono text-blue-500 dark:text-blue-400 font-bold">${row.Ticket_ID || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.Aggregator_ID || '—'}</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.Sack_Count || 1}</td>
+                        <td class="px-4 py-3 text-xs">${row.Driver_Assigned || '—'}</td>
+                        <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${statusColor}">${row.Ticket_Status || 'Pending'}</span></td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.Date_Created || '—'}</td>
+                    </tr>`;
+            });
+        }
+
+        // Initialize Data Load On Start
+        window.addEventListener('DOMContentLoaded', fetchDashboardData);
+    </script>
+</body>
+</html>
