@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New Shop Owner | SachetBank</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-6">
+
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 w-full max-w-lg shadow-xl">
+        <h1 class="text-2xl font-black text-white mb-1">New Terminal Registry</h1>
+        <p class="text-slate-400 text-sm mb-8">Register a new shop owner into the SachetBank network.</p>
+
+        <form id="addShopForm" class="space-y-5">
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Shop Name</label>
+                <input type="text" name="shop_name" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="e.g. Mama Tolu Provision Store" required>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Owner Name</label>
+                    <input type="text" name="owner_name" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Phone Number</label>
+                    <input type="tel" name="owner_phone" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none" placeholder="234..." required>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Bank Details</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" name="bank_name" placeholder="Bank Name" class="bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none">
+                    <input type="text" name="account_number" placeholder="Account Number" class="bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none">
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 transition font-bold py-3 rounded-lg mt-4 cursor-pointer">
+                Complete Registration
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addShopForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.textContent = "Registering...";
+            
+            const formData = new FormData(e.target);
+            const payload = Object.fromEntries(formData.entries());
+            payload.admin_action = 'ADD_AGGREGATOR';
+
+            const res = await fetch('https://api.presibo.com/sachetbank/webhook.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                alert("Shop Owner Registered Successfully!");
+                e.target.reset();
+            } else {
+                alert("Failed to register. Check server logs.");
+            }
+            btn.textContent = "Complete Registration";
+        });
+    </script>
+</body>
+</html>
