@@ -172,14 +172,14 @@
             bodyElement.classList.toggle('light-theme');
             
             if (bodyElement.classList.contains('light-theme')) {
-                themeIcon.textContent = '☀️';
-                themeText.textContent = 'Bright Mode';
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
                 // Adjust text colors natively inside specific table modules for crisp readability
                 document.querySelectorAll('table tbody').forEach(el => el.classList.remove('text-slate-400'));
                 document.querySelectorAll('table tbody').forEach(el => el.classList.add('text-slate-700'));
             } else {
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'Dark Mode';
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Bright Mode';
                 document.querySelectorAll('table tbody').forEach(el => el.classList.remove('text-text-slate-700'));
                 document.querySelectorAll('table tbody').forEach(el => el.classList.add('text-slate-400'));
             }
