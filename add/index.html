@@ -6,127 +6,130 @@
     <title>Register New Shop Owner | SachetBank</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-6">
-
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 w-full max-w-lg shadow-xl">
-        <h1 class="text-2xl font-black text-white mb-1">New Shop Owner Registration</h1>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-6 font-sans antialiased">
+    
+    <div id="registrationFormCard" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-8 w-full max-w-lg shadow-xl">        
+        <h1 class="text-2xl font-black text-white mb-1">New Shop Owner Registration</h1>        
         <p class="text-slate-400 text-sm mb-8">Register a new shop owner into the SachetBank network.</p>
+        
+        <div id="alertMessage" class="hidden mb-4 p-3 text-xs font-semibold rounded-lg text-center"></div>
 
-        <form id="addShopForm" class="space-y-5">
-            <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Shop Name</label>
-                <input type="text" name="shop_name" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="e.g. Mama Tolu Provision Store" required>
+        <form id="addShopForm" class="space-y-5">            
+            <div>                
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Shop Name</label>                
+                <input type="text" name="shop_name" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="e.g. Mama Tolu Provision Store" required>            
+            </div>                        
+            
+            <div class="grid grid-cols-2 gap-4">                
+                <div>                    
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Owner Name</label>                    
+                    <input type="text" name="owner_name" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none focus:border-emerald-500" required>                
+                </div>                
+                <div>                    
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Phone Number</label>                    
+                    <input type="tel" name="owner_phone" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none focus:border-emerald-500" placeholder="e.g. 2349027988268" required>                
+                </div>            
             </div>
             
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Owner Name</label>
-                    <input type="text" name="owner_name" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none" required>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Phone Number</label>
-                    <input type="tel" name="owner_phone" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none" placeholder="234..." required>
-                </div>
-            </div>
-
-            <div>
-    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Street Address</label>
-    <input type="text" name="address" placeholder="e.g. 15, Allen Avenue" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg mb-4 outline-none" required>
-    
-    <div class="grid grid-cols-2 gap-4">
-        <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">State</label>
-            <select name="state" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none" required>
-                <option value="">Select State</option>
-    <option value="Abia">Abia</option>
-    <option value="Adamawa">Adamawa</option>
-    <option value="Akwa Ibom">Akwa Ibom</option>
-    <option value="Anambra">Anambra</option>
-    <option value="Bauchi">Bauchi</option>
-    <option value="Bayelsa">Bayelsa</option>
-    <option value="Benue">Benue</option>
-    <option value="Borno">Borno</option>
-    <option value="Cross River">Cross River</option>
-    <option value="Delta">Delta</option>
-    <option value="Ebonyi">Ebonyi</option>
-    <option value="Edo">Edo</option>
-    <option value="Ekiti">Ekiti</option>
-    <option value="Enugu">Enugu</option>
-    <option value="FCT">FCT (Abuja)</option>
-    <option value="Gombe">Gombe</option>
-    <option value="Imo">Imo</option>
-    <option value="Jigawa">Jigawa</option>
-    <option value="Kaduna">Kaduna</option>
-    <option value="Kano">Kano</option>
-    <option value="Katsina">Katsina</option>
-    <option value="Kebbi">Kebbi</option>
-    <option value="Kogi">Kogi</option>
-    <option value="Kwara">Kwara</option>
-    <option value="Lagos">Lagos</option>
-    <option value="Nasarawa">Nasarawa</option>
-    <option value="Niger">Niger</option>
-    <option value="Ogun">Ogun</option>
-    <option value="Ondo">Ondo</option>
-    <option value="Osun">Osun</option>
-    <option value="Oyo">Oyo</option>
-    <option value="Plateau">Plateau</option>
-    <option value="Rivers">Rivers</option>
-    <option value="Sokoto">Sokoto</option>
-    <option value="Taraba">Taraba</option>
-    <option value="Yobe">Yobe</option>
-    <option value="Zamfara">Zamfara</option>
-            </select>
-        </div>
-        <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">LGA</label>
-            <input type="text" name="lga" placeholder="e.g. Ikeja" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none" required>
-        </div>
-    </div>
-</div>
-
-            <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Bank Details</label>
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" name="bank_name" placeholder="Bank Name" class="bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none">
-                    <input type="text" name="account_number" placeholder="Account Number" class="bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none">
+            <div>    
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Street Address</label>    
+                <input type="text" name="address" placeholder="e.g. 15, Allen Avenue" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg mb-4 outline-none focus:border-emerald-500" required>        
+                <div class="grid grid-cols-2 gap-4">        
+                    <div>            
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">State</label>            
+                        <select id="stateSelect" name="state" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none focus:border-emerald-500 text-slate-300" required>                
+                            <option value="">Select State</option>    
+                            <option value="Abia">Abia</option>    <option value="Adamawa">Adamawa</option>    <option value="Akwa Ibom">Akwa Ibom</option>    <option value="Anambra">Anambra</option>    <option value="Bauchi">Bauchi</option>    <option value="Bayelsa">Bayelsa</option>    <option value="Benue">Benue</option>    <option value="Borno">Borno</option>    <option value="Cross River">Cross River</option>    <option value="Delta">Delta</option>    <option value="Ebonyi">Ebonyi</option>    <option value="Edo">Edo</option>    <option value="Ekiti">Ekiti</option>    <option value="Enugu">Enugu</option>    <option value="FCT">FCT (Abuja)</option>    <option value="Gombe">Gombe</option>    <option value="Imo">Imo</option>    <option value="Jigawa">Jigawa</option>    <option value="Kaduna">Kaduna</option>    <option value="Kano">Kano</option>    <option value="Katsina">Katsina</option>    <option value="Kebbi">Kebbi</option>    <option value="Kogi">Kogi</option>    <option value="Kwara">Kwara</option>    <option value="Lagos">Lagos</option>    <option value="Nasarawa">Nasarawa</option>    <option value="Niger">Niger</option>    <option value="Ogun">Ogun</option>    <option value="Ondo">Ondo</option>    <option value="Osun">Osun</option>    <option value="Oyo">Oyo</option>    <option value="Plateau">Plateau</option>    <option value="Rivers">Rivers</option>    <option value="Sokoto">Sokoto</option>    <option value="Taraba">Taraba</option>    <option value="Yobe">Yobe</option>    <option value="Zamfara">Zamfara</option>            
+                        </select>        
+                    </div>        
+                    <div>            
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">LGA / City</label>            
+                        <input type="text" name="lga" placeholder="e.g. Ikeja" class="w-full bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none focus:border-emerald-500" required>        
+                    </div>    
                 </div>
             </div>
-
-            <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 transition font-bold py-3 rounded-lg mt-4 cursor-pointer">
-                Complete Registration
-            </button>
-        </form>
-      <div class="flex justify-center mt-6">
-    <a href="/admin" class="text-emerald-500 hover:text-emerald-400 font-bold text-sm underline transition">
-        &larr; Back to Admin
-    </a>
-</div>
+            
+            <div>                
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Bank Details</label>                
+                <div class="grid grid-cols-2 gap-2">                    
+                    <input type="text" name="bank_name" placeholder="Bank Name" class="bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none focus:border-emerald-500">                    
+                    <input type="text" name="account_number" placeholder="Account Number" class="bg-slate-950 border border-slate-700 p-3 rounded-lg outline-none focus:border-emerald-500 font-mono">                
+                </div>            
+            </div>
+            
+            <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 transition font-bold py-3 rounded-lg mt-4 cursor-pointer text-white shadow-md">                
+                Complete Registration            
+            </button>        
+        </form>      
+        
+        <div class="flex justify-center mt-6">    
+            <a href="/admin" class="text-emerald-500 hover:text-emerald-400 font-bold text-sm underline transition">        
+                &larr; Back to Admin Dashboard    
+            </a>
+        </div>    
     </div>
 
     <script>
-        document.getElementById('addShopForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.textContent = "Registering...";
+        // Set exact URL destination path targeting your secure verification endpoint
+        const apiUrl = 'https://api.presibo.com/sachetbank/admin-login.php';
+
+        // 1. GATEWAY ACCESS KEEPER INTERCEPTOR
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch(`${apiUrl}?action=CHECK_AUTH`, { credentials: 'include' });
+                const status = await response.json();
+                
+                if (status.authenticated) {
+                    document.getElementById('registrationFormCard').classList.remove('hidden');
+                } else {
+                    window.location.href = '/admin'; // Bounce back to login screen if session drops out
+                }
+            } catch (err) {
+                window.location.href = '/admin';
+            }
+        });
+
+        // 2. FORM PROCESSING AND POST OPERATIONS
+        document.getElementById('addShopForm').addEventListener('submit', async (e) => {            
+            e.preventDefault();            
+            const btn = document.getElementById('submitBtn');            
+            const alertBox = document.getElementById('alertMessage');
             
-            const formData = new FormData(e.target);
-            const payload = Object.fromEntries(formData.entries());
+            btn.textContent = "Registering Asset...";            
+            btn.disabled = true;
+            alertBox.classList.add('hidden');
+                        
+            const formData = new FormData(e.target);            
+            const payload = Object.fromEntries(formData.entries());            
             payload.admin_action = 'ADD_AGGREGATOR';
 
-            const res = await fetch('https://api.presibo.com/sachetbank/webhook.php', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
-            });
+            try {
+                const res = await fetch(apiUrl, {                
+                    method: 'POST',                
+                    credentials: 'include', // Ensures the tracking tracking token carries over cors
+                    headers: {'Content-Type': 'application/json'},                
+                    body: JSON.stringify(payload)            
+                });            
 
-            if (res.ok) {
-                alert("Shop Owner Registered Successfully!");
-                e.target.reset();
-            } else {
-                alert("Failed to register. Check server logs.");
+                const data = await res.json();
+
+                if (res.ok && data.success) {                
+                    alertBox.className = "mb-4 p-3 text-xs font-bold rounded-lg text-center bg-emerald-500/10 border border-emerald-500/20 text-emerald-400";
+                    alertBox.innerText = `Success! Aggregator ID issued: ${data.aggregator_id}`;
+                    alertBox.classList.remove('hidden');
+                    e.target.reset();            
+                } else {                
+                    throw new Error(data.error || "Execution processing exception occurred.");
+                }            
+            } catch (err) {
+                alertBox.className = "mb-4 p-3 text-xs font-bold rounded-lg text-center bg-red-500/10 border border-red-500/20 text-red-400";
+                alertBox.innerText = err.message;
+                alertBox.classList.remove('hidden');
+            } finally {
+                btn.textContent = "Complete Registration";            
+                btn.disabled = false;
             }
-            btn.textContent = "Complete Registration";
-        });
+        });    
     </script>
 </body>
 </html>
