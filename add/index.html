@@ -13,7 +13,7 @@
         <p class="text-slate-400 text-sm mb-8">Register a new shop owner into the SachetBank network.</p>
         
         <div id="alertMessage" class="hidden mb-4 p-3 text-xs font-semibold rounded-lg text-center"></div>
-
+aaaaaa
         <form id="addShopForm" class="space-y-5">            
             <div>                
                 <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Shop Name</label>                
@@ -79,11 +79,11 @@
                 const response = await fetch(`${apiUrl}?action=CHECK_AUTH`, { credentials: 'include' });
                 const status = await response.json();
                 
-                if (status.authenticated) {
-                    document.getElementById('registrationFormCard').classList.remove('hidden');
-                } else {
-                    window.location.href = '/admin'; // Bounce back to login screen if session drops out
-                }
+                //if (status.authenticated) {
+                  //  document.getElementById('registrationFormCard').classList.remove('hidden');
+               // } else {
+               //     window.location.href = '/admin.html'; // Bounce back to login screen if session drops out
+               // }
             } catch (err) {
                 window.location.href = '/admin';
             }
