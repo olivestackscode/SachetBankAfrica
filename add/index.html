@@ -8,12 +8,12 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-6 font-sans antialiased">
     
-    <div id="registrationFormCard" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-8 w-full max-w-lg shadow-xl">        
+    <div id="registrationFormCard" class="bg-slate-900 border border-slate-800 rounded-2xl p-8 w-full max-w-lg shadow-xl">        
         <h1 class="text-2xl font-black text-white mb-1">New Shop Owner Registration</h1>        
         <p class="text-slate-400 text-sm mb-8">Register a new shop owner into the SachetBank network.</p>
         
         <div id="alertMessage" class="hidden mb-4 p-3 text-xs font-semibold rounded-lg text-center"></div>
-aaaaaa
+
         <form id="addShopForm" class="space-y-5">            
             <div>                
                 <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Shop Name</label>                
@@ -70,26 +70,9 @@ aaaaaa
     </div>
 
     <script>
-        // Set exact URL destination path targeting your secure verification endpoint
         const apiUrl = 'https://api.presibo.com/sachetbank/admin-add.php';
 
-        // 1. GATEWAY ACCESS KEEPER INTERCEPTOR
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const response = await fetch(`${apiUrl}?action=CHECK_AUTH`, { credentials: 'include' });
-                const status = await response.json();
-                
-                //if (status.authenticated) {
-                  //  document.getElementById('registrationFormCard').classList.remove('hidden');
-               // } else {
-               //     window.location.href = '/admin.html'; // Bounce back to login screen if session drops out
-               // }
-            } catch (err) {
-                window.location.href = '/admin';
-            }
-        });
-
-        // 2. FORM PROCESSING AND POST OPERATIONS
+        // FORM PROCESSING AND POST OPERATIONS
         document.getElementById('addShopForm').addEventListener('submit', async (e) => {            
             e.preventDefault();            
             const btn = document.getElementById('submitBtn');            
@@ -106,7 +89,7 @@ aaaaaa
             try {
                 const res = await fetch(apiUrl, {                
                     method: 'POST',                
-                    credentials: 'include', // Ensures the tracking tracking token carries over cors
+                    credentials: 'include', 
                     headers: {'Content-Type': 'application/json'},                
                     body: JSON.stringify(payload)            
                 });            
