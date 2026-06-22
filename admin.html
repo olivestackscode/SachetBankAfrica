@@ -20,8 +20,8 @@
 
             <form id="loginForm" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-1.5">Username or Phone</label>
-                    <input type="text" id="identifier" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 font-medium font-mono">
+                    <label class="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-1.5">Phone Number</label>
+                    <input type="text" id="phone_number" placeholder="e.g. 09027988268" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 font-medium font-mono">
                 </div>
                 <div>
                     <label class="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-1.5">Secret Password</label>
@@ -147,7 +147,7 @@
     </style>
 
     <script>
-        const apiUrl = 'https://api.presibo.com/sachetbank/admin=login.php';
+        const apiUrl = 'https://api.presibo.com/sachetbank/admin-login.php';
 
         // Root Initialization Hook
         document.addEventListener('DOMContentLoaded', checkAuthentication);
@@ -165,7 +165,6 @@
                     document.getElementById('authPanel').classList.add('hidden');
                     document.getElementById('dashboardTerminal').classList.remove('hidden');
                     
-                    // FIXED: Telemetry data stream ONLY triggers after auth verification returns 200 OK
                     await fetchDashboardData();
                 } else {
                     showLoginView();
@@ -180,7 +179,6 @@
             document.getElementById('dashboardTerminal').classList.add('hidden');
             document.getElementById('authPanel').classList.remove('hidden');
             
-            // Re-inject pristine loading states across view containers
             document.getElementById('aggregatorTableBody').innerHTML = '<tr><td colspan="9" class="text-center py-4 text-slate-500 font-mono">Loading telemetry registry...</td></tr>';
             document.getElementById('donorTableBody').innerHTML = '<tr><td colspan="8" class="text-center py-4 text-slate-500 font-mono">Loading digital ledger...</td></tr>';
             document.getElementById('ticketTableBody').innerHTML = '<tr><td colspan="6" class="text-center py-4 text-slate-500 font-mono">Loading transit queues...</td></tr>';
@@ -199,17 +197,16 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         admin_action: 'LOGIN',
-                        identifier: document.getElementById('identifier').value,
+                        phone_number: document.getElementById('phone_number').value, // Matches the updated unhashed database lookups
                         password: document.getElementById('password').value
                     })
                 });
 
                 const data = await response.json();
                 if (response.ok && data.success) {
-                    document.getElementById('identifier').value = '';
+                    document.getElementById('phone_number').value = '';
                     document.getElementById('password').value = '';
                     
-                    // Re-route processing logic into check loop sequentially
                     await checkAuthentication();
                 } else {
                     errBox.innerText = data.error || 'Authentication credentials parameters invalid.';
