@@ -147,15 +147,16 @@
     </style>
 
     <script>
-        // Points exactly to your secure backend API script routing setup
         const apiUrl = 'https://api.presibo.com/sachetbank/webhook.php';
 
-        // Initialize Authentication Handshake Verification Loop
+        // Root Initialization Hook
         document.addEventListener('DOMContentLoaded', checkAuthentication);
 
+        // ========================================================
+        // AUTHENTICATION ENGINE
+        // ========================================================
         async function checkAuthentication() {
             try {
-                // Sent with cross-origin credentials flag to fetch ongoing PHP Session contexts
                 const response = await fetch(`${apiUrl}?action=CHECK_AUTH`, { credentials: 'include' });
                 const status = await response.json();
                 
@@ -163,19 +164,29 @@
                     document.getElementById('adminUser').innerText = status.username;
                     document.getElementById('authPanel').classList.add('hidden');
                     document.getElementById('dashboardTerminal').classList.remove('hidden');
-                    fetchDashboardData();
+                    
+                    // FIXED: Telemetry data stream ONLY triggers after auth verification returns 200 OK
+                    await fetchDashboardData();
                 } else {
-                    document.getElementById('dashboardTerminal').classList.add('hidden');
-                    document.getElementById('authPanel').classList.remove('hidden');
+                    showLoginView();
                 }
             } catch (err) {
                 console.error("Auth security verification fault:", err);
-                document.getElementById('dashboardTerminal').classList.add('hidden');
-                document.getElementById('authPanel').classList.remove('hidden');
+                showLoginView();
             }
         }
 
-        // Authentication Submission Handler Form
+        function showLoginView() {
+            document.getElementById('dashboardTerminal').classList.add('hidden');
+            document.getElementById('authPanel').classList.remove('hidden');
+            
+            // Re-inject pristine loading states across view containers
+            document.getElementById('aggregatorTableBody').innerHTML = '<tr><td colspan="9" class="text-center py-4 text-slate-500 font-mono">Loading telemetry registry...</td></tr>';
+            document.getElementById('donorTableBody').innerHTML = '<tr><td colspan="8" class="text-center py-4 text-slate-500 font-mono">Loading digital ledger...</td></tr>';
+            document.getElementById('ticketTableBody').innerHTML = '<tr><td colspan="6" class="text-center py-4 text-slate-500 font-mono">Loading transit queues...</td></tr>';
+        }
+
+        // Form Submission Interceptor
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const errBox = document.getElementById('loginError');
@@ -184,7 +195,7 @@
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
-                    credentials: 'include', // Permits saving session tokens cross-origin
+                    credentials: 'include', 
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         admin_action: 'LOGIN',
@@ -197,9 +208,11 @@
                 if (response.ok && data.success) {
                     document.getElementById('identifier').value = '';
                     document.getElementById('password').value = '';
-                    checkAuthentication();
+                    
+                    // Re-route processing logic into check loop sequentially
+                    await checkAuthentication();
                 } else {
-                    errBox.innerText = data.error || 'Authentication parameters invalid.';
+                    errBox.innerText = data.error || 'Authentication credentials parameters invalid.';
                     errBox.classList.remove('hidden');
                 }
             } catch (err) {
@@ -218,7 +231,9 @@
             }
         });
 
-        // Tab Switching Engine Router
+        // ========================================================
+        // WORKSPACE VIEW CONTROLLER
+        // ========================================================
         function switchTab(tabId) {
             document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -232,7 +247,9 @@
             activeBtn.classList.add('border-emerald-500', 'text-emerald-400');
         }
 
-        // Telemetry Protected Data Retrieval Loops
+        // ========================================================
+        // SECURED DATA ACQUISITION & RENDERING LOOPS
+        // ========================================================
         async function fetchDashboardData() {
             try {
                 // Fetch Aggregators DataFrame
@@ -245,7 +262,7 @@
                 if (r1.ok) { 
                     renderAggregators(await r1.json()); 
                 } else if (r1.status === 401 || r1.status === 403) { 
-                    checkAuthentication(); 
+                    showLoginView(); 
                     return; 
                 }
 
@@ -272,7 +289,6 @@
             }
         }
 
-        // Data Table Dynamic Rendering Templates
         function renderAggregators(data) {
             const tbody = document.getElementById('aggregatorTableBody');
             tbody.innerHTML = data.length ? '' : '<tr><td colspan="9" class="text-center py-4 text-slate-500">No registered terminal records found.</td></tr>';
