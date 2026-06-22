@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SachetBank Administrative Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased transition-colors duration-300 dynamic-body">
+
+    <div id="authPanel" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-8 w-full max-width md:max-w-md">
+            <div class="text-center mb-6">
+                <span class="text-4xl">🏦</span>
+                <h2 class="text-2xl font-black text-white mt-3">SachetBank Terminal</h2>
+                <p class="text-sm text-slate-400 mt-1">Verification credentials required for entry</p>
+            </div>
+            
+            <div id="loginError" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold rounded-lg text-center"></div>
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-1.5">Username or Phone</label>
+                    <input type="text" id="identifier" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-1.5">Secret Password</label>
+                    <input type="password" id="password" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 font-medium">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm py-3 px-4 rounded-lg transition-colors cursor-pointer shadow-md mt-2">
+                    Unlock Dashboard Terminal
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboardTerminal" class="hidden p-8">
+        <header class="mb-8 border-b border-slate-800 pb-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">        
+            <div>                      
+                <h1 class="text-3xl font-black text-slate-900 dark:text-white mt-1">SachetBank Admin Dashboard</h1>        
+                <p class="text-xs text-slate-400 font-medium mt-1 font-mono">Operator Token: <span id="adminUser" class="text-emerald-400 font-bold"></span></p>
+            </div>
+            <div>
+                <button id="logoutBtn" class="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-lg text-xs font-mono font-bold tracking-wider cursor-pointer transition-colors uppercase">
+                    Secure Logout
+                </button>
+            </div>
+        </header>
+
+        <nav class="flex border-b border-slate-800 mb-6 gap-2 text-sm font-bold">        
+            <button onclick="switchTab('aggregators')" id="tab-aggregators" class="tab-btn px-4 py-2.5 border-b-2 border-emerald-500 text-emerald-400 transition-all cursor-pointer">            
+                Tab 1: Shop Owners        
+            </button>        
+            <button onclick="switchTab('donors')" id="tab-donors" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all cursor-pointer">            
+                Tab 2: Donors        
+            </button>        
+            <button onclick="switchTab('tickets')" id="tab-tickets" class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all cursor-pointer">            
+                Tab 3: Pickup Requests        
+            </button>         
+            <button class="tab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all cursor-pointer">           
+                <a href="/add">+ Add New Shop Owner</a>        
+            </button>    
+        </nav>
+
+        <section id="panel-aggregators" class="tab-panel bg-slate-900 border border-slate-800 rounded-xl shadow-md p-6 overflow-hidden">        
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">            
+                <span class="w-2 h-4 bg-emerald-500 rounded mr-2.5"></span> All Shop Owners        
+            </h2>        
+            <div class="overflow-x-auto">            
+                <table class="w-full text-left text-sm text-slate-400">                
+                    <thead class="bg-slate-950 text-xs text-slate-200 uppercase font-mono tracking-wider border-b border-slate-800">                    
+                        <tr>                        
+                            <th class="px-4 py-3">Aggregator ID</th>                        
+                            <th class="px-4 py-3">Shop Name</th>                        
+                            <th class="px-4 py-3">Owner Phone</th>                        
+                            <th class="px-4 py-3">Street Address</th>                        
+                            <th class="px-4 py-3">Bank Name</th>                        
+                            <th class="px-4 py-3">Account Number</th>                        
+                            <th class="px-4 py-3 text-center">Scale</th>                        
+                            <th class="px-4 py-3 text-center">Sacks Held</th>                        
+                            <th class="px-4 py-3">Cash Wallet</th>                    
+                        </tr>                
+                    </thead>                
+                    <tbody id="aggregatorTableBody">                    
+                        <tr><td colspan="9" class="text-center py-4 text-slate-500 font-mono">Loading telemetry registry...</td></tr>                
+                    </tbody>            
+                </table>        
+            </div>    
+        </section>
+
+        <section id="panel-donors" class="tab-panel hidden bg-slate-900 border border-slate-800 rounded-xl shadow-md p-6 overflow-hidden">        
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">            
+                <span class="w-2 h-4 bg-amber-500 rounded mr-2.5"></span> All Donors        
+            </h2>        
+            <div class="overflow-x-auto">            
+                <table class="w-full text-left text-sm text-slate-400">                
+                    <thead class="bg-slate-950 text-xs text-slate-200 uppercase font-mono tracking-wider border-b border-slate-800">                    
+                        <tr>                        
+                            <th class="px-4 py-3">Donor ID</th>                        
+                            <th class="px-4 py-3">Linked Terminal</th>                        
+                            <th class="px-4 py-3">Full Name</th>                        
+                            <th class="px-4 py-3">Phone Number</th>                        
+                            <th class="px-4 py-3">Email Address</th>                        
+                            <th class="px-4 py-3 text-center">Points Balance</th>                        
+                            <th class="px-4 py-3 text-center">Monthly Weight</th>                        
+                            <th class="px-4 py-3 text-center">All-Time Weight</th>                    
+                        </tr>                
+                    </thead>                
+                    <tbody id="donorTableBody">                    
+                        <tr><td colspan="8" class="text-center py-4 text-slate-500 font-mono">Loading digital ledger...</td></tr>                
+                    </tbody>            
+                </table>        
+            </div>    
+        </section>
+
+        <section id="panel-tickets" class="tab-panel hidden bg-slate-900 border border-slate-800 rounded-xl shadow-md p-6 overflow-hidden">        
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">            
+                <span class="w-2 h-4 bg-blue-500 rounded mr-2.5"></span> All Pickups        
+            </h2>        
+            <div class="overflow-x-auto">            
+                <table class="w-full text-left text-sm text-slate-400">                
+                    <thead class="bg-slate-950 text-xs text-slate-200 uppercase font-mono tracking-wider border-b border-slate-800">                    
+                        <tr>                        
+                            <th class="px-4 py-3">Ticket ID</th>                        
+                            <th class="px-4 py-3">Aggregator ID</th>                        
+                            <th class="px-4 py-3 text-center">Sack Count</th>                        
+                            <th class="px-4 py-3">Driver Assigned</th>                        
+                            <th class="px-4 py-3">Ticket Status</th>                        
+                            <th class="px-4 py-3">Date Created</th>                    
+                        </tr>                
+                    </thead>                
+                    <tbody id="ticketTableBody">                    
+                        <tr><td colspan="6" class="text-center py-4 text-slate-500 font-mono">Loading transit queues...</td></tr>                
+                    </tbody>            
+                </table>        
+            </div>    
+        </section>
+    </div>
+
+    <style>        
+        .light-theme { background-color: #f8fafc !important; color: #0f172a !important; }
+        .light-theme header, .light-theme nav { border-color: #cbd5e1 !important; }
+        .light-theme .tab-panel { background-color: #ffffff !important; border-color: #e2e8f0 !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); }
+        .light-theme table thead { background-color: #f1f5f9 !important; color: #334155 !important; border-color: #cbd5e1 !important; }
+        .light-theme table tbody tr { border-color: #f1f5f9 !important; }
+        .light-theme table tbody tr:hover { background-color: #f8fafc !important; }
+    </style>
+
+    <script>
+        // Update this pointing to your isolated secure backend routing endpoint file directly
+        const apiUrl = 'api.php';
+
+        // ========================================================
+        // 1. GATEWAY CONTROLLERS & ENGINE INITIALIZATION
+        // ========================================================
+        document.addEventListener('DOMContentLoaded', checkAuthentication);
+
+        async function checkAuthentication() {
+            try {
+                const response = await fetch(`${apiUrl}?action=CHECK_AUTH`);
+                const status = await response.json();
+                
+                if (status.authenticated) {
+                    document.getElementById('adminUser').innerText = status.username;
+                    document.getElementById('authPanel').classList.add('hidden');
+                    document.getElementById('dashboardTerminal').classList.remove('hidden');
+                    fetchDashboardData();
+                } else {
+                    document.getElementById('dashboardTerminal').classList.add('hidden');
+                    document.getElementById('authPanel').classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error("Auth security verification fault:", err);
+                document.getElementById('authPanel').classList.remove('hidden');
+            }
+        }
+
+        // Authentication Submission Handler Form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errBox = document.getElementById('loginError');
+            errBox.classList.add('hidden');
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        admin_action: 'LOGIN',
+                        identifier: document.getElementById('identifier').value,
+                        password: document.getElementById('password').value
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    document.getElementById('identifier').value = '';
+                    document.getElementById('password').value = '';
+                    checkAuthentication();
+                } else {
+                    errBox.innerText = data.error || 'Authentication parameters invalid.';
+                    errBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                errBox.innerText = 'Network communication failure accessing gateway.';
+                errBox.classList.remove('hidden');
+            }
+        });
+
+        // Logout Core Routine
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await fetch(`${apiUrl}?action=LOGOUT`);
+                window.location.reload();
+            } catch (err) {
+                console.error("Termination handler error:", err);
+            }
+        });
+
+        // ========================================================
+        // 2. DYNAMIC TAB-SWITCHING SYSTEM
+        // ========================================================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-emerald-500', 'text-emerald-400');
+                btn.classList.add('border-transparent', 'text-slate-400');
+            });
+
+            document.getElementById(`panel-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.remove('border-transparent', 'text-slate-400');
+            activeBtn.classList.add('border-emerald-500', 'text-emerald-400');
+        }
+
+        // ========================================================
+        // 3. TELEMETRY PROTECTION RECORDS CAPTURE LOOPS
+        // ========================================================
+        async function fetchDashboardData() {
+            try {
+                // Fetch Aggregators Data Frame
+                let r1 = await fetch(apiUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({admin_action: 'GET_AGGREGATORS'}) });
+                if (r1.ok) { renderAggregators(await r1.json()); } 
+                else if (r1.status === 403) { checkAuthentication(); return; }
+
+                // Fetch Donors Data Frame
+                let r2 = await fetch(apiUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({admin_action: 'GET_DONORS'}) });
+                if (r2.ok) renderDonors(await r2.json());
+
+                // Fetch Tickets Data Frame
+                let r3 = await fetch(apiUrl, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({admin_action: 'GET_TICKETS'}) });
+                if (r3.ok) renderTickets(await r3.json());
+
+            } catch (err) {
+                console.error("Dashboard engine network connection fault:", err);
+            }
+        }
+
+        // ========================================================
+        // 4. RENDERING LOOPS FOR SYSTEM TABLES
+        // ========================================================
+        function renderAggregators(data) {
+            const tbody = document.getElementById('aggregatorTableBody');
+            tbody.innerHTML = data.length ? '' : '<tr><td colspan="9" class="text-center py-4 text-slate-500">No registered terminal records found.</td></tr>';
+            data.forEach(row => {
+                const cash = row.Current_Cash_Wallet ? parseFloat(row.Current_Cash_Wallet).toLocaleString('en-NG', {minimumFractionDigits: 2}) : '0.00';
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-800 hover:bg-slate-800/40 font-medium">
+                        <td class="px-4 py-3 font-mono text-emerald-500 font-bold">${row.Aggregator_ID || '—'}</td>
+                        <td class="px-4 py-3 font-semibold">${row.Shop_Name || '—'}</td>
+                        <td class="px-4 py-3 font-mono">${row.Owner_Phone || '—'}</td>
+                        <td class="px-4 py-3 text-xs">${row.Street_Address || '—'}</td>
+                        <td class="px-4 py-3 text-xs">${row.Bank_Name || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.Account_Number || '—'}</td>
+                        <td class="px-4 py-3 text-center text-xs">${row.Scale_Issued || 'No'}</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.Large_Sacks_Held || 0}</td>
+                        <td class="px-4 py-3 font-bold text-emerald-600 dark:text-emerald-300 font-mono">₦${cash}</td>
+                    </tr>`;
+            });
+        }
+
+        function renderDonors(data) {
+            const tbody = document.getElementById('donorTableBody');
+            tbody.innerHTML = data.length ? '' : '<tr><td colspan="8" class="text-center py-4 text-slate-500">No registered donor records found.</td></tr>';
+            data.forEach(row => {
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-800 hover:bg-slate-800/40 font-medium">
+                        <td class="px-4 py-3 font-mono text-amber-600 dark:text-amber-400 font-bold">${row.Donor_ID || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.Linked_Terminal_ID || '—'}</td>
+                        <td class="px-4 py-3 font-semibold">${row.Full_Name || '—'}</td>
+                        <td class="px-4 py-3 font-mono">${row.Phone_Number || '—'}</td>
+                        <td class="px-4 py-3 text-xs">${row.Email_Address || '—'}</td>
+                        <td class="px-4 py-3 text-center font-bold text-amber-600 dark:text-amber-300 font-mono">${row.Current_Points_Balance || 0}</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.Monthly_Weight_KG || '0.00'} kg</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.All_Time_Weight_KG || '0.00'} kg</td>
+                    </tr>`;
+            });
+        }
+
+        function renderTickets(data) {
+            const tbody = document.getElementById('ticketTableBody');
+            tbody.innerHTML = data.length ? '' : '<tr><td colspan="6" class="text-center py-4 text-slate-500">No open evacuation workflows found.</td></tr>';
+            data.forEach(row => {
+                const statusColor = row.Ticket_Status === 'Pending' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-800 hover:bg-slate-800/40 font-medium">
+                        <td class="px-4 py-3 font-mono text-blue-500 dark:text-blue-400 font-bold">${row.Ticket_ID || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.Aggregator_ID || '—'}</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.Sack_Count || 1}</td>
+                        <td class="px-4 py-3 text-xs">${row.Driver_Assigned || '—'}</td>
+                        <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${statusColor}">${row.Ticket_Status || 'Pending'}</span></td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.Date_Created || '—'}</td>
+                    </tr>`;
+            });
+        }
+    </script>
+</body>
+</html>
