@@ -11,9 +11,9 @@
     <div id="authPanel" class="hidden min-h-screen flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-8 w-full max-w-md">
             <div class="text-center mb-6">
-                <span class="text-4xl"></span>
-                <h2 class="text-2xl font-black text-white mt-3">SachetBank Admin</h2>
-                <p class="text-sm text-slate-400 mt-1">Enter Login Credentials</p>
+                <span class="text-4xl">🏦</span>
+                <h2 class="text-2xl font-black text-white mt-3">SachetBank Terminal</h2>
+                <p class="text-sm text-slate-400 mt-1">Verification credentials required for entry</p>
             </div>
             
             <div id="loginError" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold rounded-lg text-center"></div>
@@ -28,7 +28,7 @@
                     <input type="password" id="password" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 font-medium">
                 </div>
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm py-3 px-4 rounded-lg transition-colors cursor-pointer shadow-md mt-2">
-                    Login
+                    Unlock Dashboard Terminal
                 </button>
             </form>
         </div>
@@ -38,11 +38,11 @@
         <header class="mb-8 border-b border-slate-800 pb-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">        
             <div>                      
                 <h1 class="text-3xl font-black text-white mt-1">SachetBank Admin Dashboard</h1>        
-                <p class="text-xs text-slate-400 font-medium mt-1 font-mono">Username: <span id="adminUser" class="text-emerald-400 font-bold"></span></p>
+                <p class="text-xs text-slate-400 font-medium mt-1 font-mono">Operator Token: <span id="adminUser" class="text-emerald-400 font-bold"></span></p>
             </div>
             <div>
                 <button id="logoutBtn" class="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-lg text-xs font-mono font-bold tracking-wider cursor-pointer transition-colors uppercase">
-                    Logout
+                    Secure Logout
                 </button>
             </div>
         </header>
@@ -123,9 +123,11 @@
                         <tr>                        
                             <th class="px-4 py-3">Ticket ID</th>                        
                             <th class="px-4 py-3">Aggregator ID</th>                        
-                            <th class="px-4 py-3 text-center">Sack Count</th>                        
-                            <th class="px-4 py-3">Driver Assigned</th>                        
-                            <th class="px-4 py-3">Ticket Status</th>                        
+                            <th class="px-4 py-3 text-center">Shop Name</th>                        
+                            <th class="px-4 py-3">Shop Address</th>                        
+                            <th class="px-4 py-3">Ticket Status</th>
+                             <th class="px-4 py-3">Driver Assigned</th>  
+                             <th class="px-4 py-3">Driver ID</th>  
                             <th class="px-4 py-3">Date Created</th>                    
                         </tr>                
                     </thead>                
@@ -152,15 +154,30 @@
         // Root Initialization Hook
         document.addEventListener('DOMContentLoaded', checkAuthentication);
 
+        // Helper to securely get saved cross-platform authentication token
+        function getAuthToken() {
+            return localStorage.getItem('sachet_admin_token') || '';
+        }
+
         // ========================================================
         // AUTHENTICATION ENGINE
         // ========================================================
         async function checkAuthentication() {
+            const token = getAuthToken();
+            if (!token) {
+                showLoginView();
+                return;
+            }
+
             try {
-                const response = await fetch(`${apiUrl}?action=CHECK_AUTH`, { credentials: 'include' });
+                // Pass authorization token directly inside standard header routing values
+                const response = await fetch(`${apiUrl}?action=CHECK_AUTH`, { 
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
                 const status = await response.json();
                 
-                if (status.authenticated) {
+                if (response.ok && status.authenticated) {
                     document.getElementById('adminUser').innerText = status.username;
                     document.getElementById('authPanel').classList.add('hidden');
                     document.getElementById('dashboardTerminal').classList.remove('hidden');
@@ -176,6 +193,8 @@
         }
 
         function showLoginView() {
+            // Drop current invalid storage pointers
+            localStorage.removeItem('sachet_admin_token');
             document.getElementById('dashboardTerminal').classList.add('hidden');
             document.getElementById('authPanel').classList.remove('hidden');
             
@@ -193,19 +212,21 @@
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
-                    credentials: 'include', 
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         admin_action: 'LOGIN',
-                        phone_number: document.getElementById('phone_number').value, // Matches the updated unhashed database lookups
+                        phone_number: document.getElementById('phone_number').value,
                         password: document.getElementById('password').value
                     })
                 });
 
                 const data = await response.json();
-                if (response.ok && data.success) {
+                if (response.ok && data.success && data.token) {
                     document.getElementById('phone_number').value = '';
                     document.getElementById('password').value = '';
+                    
+                    // Securely register the cross-origin platform independent validation token string
+                    localStorage.setItem('sachet_admin_token', data.token);
                     
                     await checkAuthentication();
                 } else {
@@ -221,10 +242,15 @@
         // Logout Core Routine
         document.getElementById('logoutBtn').addEventListener('click', async () => {
             try {
-                await fetch(`${apiUrl}?action=LOGOUT`, { credentials: 'include' });
-                window.location.reload();
+                const token = getAuthToken();
+                await fetch(`${apiUrl}?action=LOGOUT`, { 
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
             } catch (err) {
-                console.error("Termination handler error:", err);
+                console.error("Termination handler network fault:", err);
+            } finally {
+                showLoginView();
             }
         });
 
@@ -248,13 +274,16 @@
         // SECURED DATA ACQUISITION & RENDERING LOOPS
         // ========================================================
         async function fetchDashboardData() {
+            const token = getAuthToken();
             try {
                 // Fetch Aggregators DataFrame
                 let r1 = await fetch(apiUrl, { 
                     method: 'POST', 
-                    credentials: 'include',
                     headers: {'Content-Type': 'application/json'}, 
-                    body: JSON.stringify({admin_action: 'GET_AGGREGATORS'}) 
+                    body: JSON.stringify({
+                        admin_action: 'GET_AGGREGATORS',
+                        auth_token: token
+                    }) 
                 });
                 if (r1.ok) { 
                     renderAggregators(await r1.json()); 
@@ -266,18 +295,22 @@
                 // Fetch Donors DataFrame
                 let r2 = await fetch(apiUrl, { 
                     method: 'POST', 
-                    credentials: 'include',
                     headers: {'Content-Type': 'application/json'}, 
-                    body: JSON.stringify({admin_action: 'GET_DONORS'}) 
+                    body: JSON.stringify({
+                        admin_action: 'GET_DONORS',
+                        auth_token: token
+                    }) 
                 });
                 if (r2.ok) renderDonors(await r2.json());
 
                 // Fetch Tickets DataFrame
                 let r3 = await fetch(apiUrl, { 
                     method: 'POST', 
-                    credentials: 'include',
                     headers: {'Content-Type': 'application/json'}, 
-                    body: JSON.stringify({admin_action: 'GET_TICKETS'}) 
+                    body: JSON.stringify({
+                        admin_action: 'GET_TICKETS',
+                        auth_token: token
+                    }) 
                 });
                 if (r3.ok) renderTickets(await r3.json());
 
@@ -331,12 +364,14 @@
                 const statusColor = row.Ticket_Status === 'Pending' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-800 hover:bg-slate-800/40 font-medium">
-                        <td class="px-4 py-3 font-mono text-blue-400 font-bold">${row.Ticket_ID || '—'}</td>
-                        <td class="px-4 py-3 font-mono text-xs">${row.Aggregator_ID || '—'}</td>
-                        <td class="px-4 py-3 text-center font-mono">${row.Sack_Count || 1}</td>
-                        <td class="px-4 py-3 text-xs">${row.Driver_Assigned || '—'}</td>
-                        <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${statusColor}">${row.Ticket_Status || 'Pending'}</span></td>
-                        <td class="px-4 py-3 font-mono text-xs">${row.Date_Created || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-blue-400 font-bold">${row.ticket_id || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.aggregator_phone || '—'}</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.shop_name || 1}</td>
+                        <td class="px-4 py-3 text-xs">${row.shop_address || '—'}</td>
+                        <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${statusColor}">${row.status || 'Pending'}</span></td>
+                        <td class="px-4 py-3 text-center font-mono">${row.driver_assigned || 1}</td>
+                        <td class="px-4 py-3 text-xs">${row.driver_id || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.date_created || '—'}</td>
                     </tr>`;
             });
         }
