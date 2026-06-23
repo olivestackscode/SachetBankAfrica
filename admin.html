@@ -123,7 +123,7 @@
                         <tr>                        
                             <th class="px-4 py-3">Ticket ID</th>                        
                             <th class="px-4 py-3">Aggregator ID</th>                        
-                            <th class="px-4 py-3 text-center">Sack Count</th>                        
+                            <th class="px-4 py-3 text-center">Shop Name</th>                        
                             <th class="px-4 py-3">Shop Address</th>                        
                             <th class="px-4 py-3">Ticket Status</th>
                              <th class="px-4 py-3">Driver Assigned</th>  
@@ -371,7 +371,7 @@
                         <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${statusColor}">${row.status || 'Pending'}</span></td>
                         <td class="px-4 py-3 text-center font-mono">${row.driver_assigned || 1}</td>
                         <td class="px-4 py-3 text-xs">${row.driver_id || '—'}</td>
-                        <td class="px-4 py-3 font-mono text-xs">${row.Date_Created || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.date_created || '—'}</td>
                     </tr>`;
             });
         }
