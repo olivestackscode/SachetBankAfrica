@@ -362,11 +362,11 @@
                 const statusColor = row.Ticket_Status === 'Pending' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-800 hover:bg-slate-800/40 font-medium">
-                        <td class="px-4 py-3 font-mono text-blue-400 font-bold">${row.Ticket_ID || '—'}</td>
-                        <td class="px-4 py-3 font-mono text-xs">${row.Aggregator_ID || '—'}</td>
-                        <td class="px-4 py-3 text-center font-mono">${row.Sack_Count || 1}</td>
-                        <td class="px-4 py-3 text-xs">${row.Driver_Assigned || '—'}</td>
-                        <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${statusColor}">${row.Ticket_Status || 'Pending'}</span></td>
+                        <td class="px-4 py-3 font-mono text-blue-400 font-bold">${row.ticket_id || '—'}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${row.aggregator_phone || '—'}</td>
+                        <td class="px-4 py-3 text-center font-mono">${row.shop_name || 1}</td>
+                        <td class="px-4 py-3 text-xs">${row.shop_address || '—'}</td>
+                        <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-bold ${statusColor}">${row.status || 'Pending'}</span></td>
                         <td class="px-4 py-3 font-mono text-xs">${row.Date_Created || '—'}</td>
                     </tr>`;
             });
