@@ -10,19 +10,54 @@
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans">
 
-    <nav class="flex justify-between items-center py-6 px-10 bg-white shadow-sm">
-        <div class="text-2xl font-black text-emerald-600">SachetBank</div>
-        <a href="https://wa.me/message/273GKZAYDRM2A1" class="bg-emerald-600 text-white px-6 py-2.5 rounded-full font-bold hover:bg-emerald-700 transition flex items-center gap-2">
-            <i class="fab fa-whatsapp text-lg"></i>
-            <span>Get Started</span>
-        </a>
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 md:px-10 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="text-2xl font-black text-emerald-600">
+                <a href="index.html">SachetBank</a>
+            </div>
+            
+            <!-- Right side controls (Mobile: Get Started icon/button + Hamburger, Desktop: Menu + Get Started) -->
+            <div class="flex items-center gap-3 md:gap-4">
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8 font-semibold text-slate-650 mr-4">
+                    <a href="about-us.html" class="hover:text-emerald-600 transition">About Us</a>
+                    <a href="contact.html" class="hover:text-emerald-600 transition">Contact Us</a>
+                    <a href="map-viewer.html" class="hover:text-emerald-600 transition">Find Terminals</a>
+                </div>
+                
+                <!-- Get Started Button (Visible on both mobile and desktop) -->
+                <a href="https://wa.me/+15556780493" class="bg-emerald-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full font-bold hover:bg-emerald-700 transition flex items-center gap-1.5 text-xs sm:text-sm shadow-sm whitespace-nowrap">
+                    <i class="fab fa-whatsapp text-base"></i>
+                    <span class="hidden sm:inline">Get Started</span>
+                </a>
+
+                <!-- Mobile Menu Button (Hamburger) -->
+                <button id="mobile-menu-btn" class="md:hidden text-slate-700 hover:text-emerald-600 focus:outline-none p-1" aria-label="Toggle Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 px-6 py-4 space-y-3 shadow-inner">
+            <a href="about-us.html" class="block font-semibold text-slate-700 hover:text-emerald-600 py-1">About Us</a>
+            <a href="contact.html" class="block font-semibold text-slate-700 hover:text-emerald-600 py-1">Contact Us</a>
+            <a href="map-viewer.html" class="block font-semibold text-slate-700 hover:text-emerald-600 py-1">Find Terminals</a>
+        </div>
     </nav>
 
-    <header class="py-20 px-10 text-center">
-        <h1 class="text-5xl font-black mb-6">Turning Sachet Waste into<br><span class="text-emerald-600">Nutritious Food Rewards</span></h1>
-        <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-10">We help communities clean their environment by aggregating plastic sachet waste. Deposit your plastic, earn points, and redeem them for food items at local partner terminals.</p>
-        <div class="flex gap-4 justify-center">
-            <a href="#how-it-works" class="border-2 border-slate-900 px-8 py-3 rounded-lg font-bold">How it Works</a>
+    <header class="py-12 px-6 sm:py-20 sm:px-10 text-center">
+        <h1 class="text-3xl sm:text-5xl font-black mb-6 leading-tight">Turning Sachet Waste into<br><span class="text-emerald-600">Nutritious Food Rewards</span></h1>
+        <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto mb-8 sm:mb-10">We help communities clean their environment by aggregating plastic sachet waste. Deposit your plastic, earn points, and redeem them for food items at local partner terminals.</p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center items-center max-w-xs sm:max-w-none mx-auto">
+            <a href="https://wa.me/+15556780493" class="w-full sm:w-auto bg-emerald-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-emerald-700 transition flex items-center justify-center gap-2 shadow-sm whitespace-nowrap">
+                <i class="fab fa-whatsapp text-lg"></i>
+                <span>Get Started on WhatsApp</span>
+            </a>
+            <a href="#how-it-works" class="w-full sm:w-auto border-2 border-slate-900 text-slate-900 px-8 py-2.5 rounded-lg font-bold hover:bg-slate-900 hover:text-white transition text-center">
+                How it Works
+            </a>
         </div>
     </header>
 
@@ -119,8 +154,52 @@
         </div>
     </section>
 
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-6 md:px-10 bg-slate-50 border-t border-slate-100">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-black mb-4">Contact Us</h2>
+            <p class="text-slate-600 mb-8 max-w-xl mx-auto">Have questions about SachetBank, partnering with us, or registering as an aggregator? Get in touch with us directly on WhatsApp.</p>
+            <div class="flex flex-col items-center gap-4">
+                <a href="https://wa.me/+15556780493" class="inline-flex items-center gap-2 bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition shadow-sm">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                    <span>Chat with SachetBank Support</span>
+                </a>
+                <p class="text-slate-550 text-sm mt-2">
+                    Or email us at: <a href="mailto:support@sachetbank.com" class="text-emerald-600 hover:underline font-semibold">support@sachetbank.com</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
     <footer class="py-10 text-center text-slate-500 text-sm">
         &copy; 2026 SachetBank Africa. Banking on a Cleaner Africa
     </footer>
+
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = menuBtn.querySelector('i');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            } else {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+    </script>
 </body>
 </html>
