@@ -414,7 +414,7 @@
     <!-- Loading Overlay -->
     <div class="loader-overlay" id="loader">
         <div class="spinner"></div>
-        <div class="loader-text" id="loader-text">Loading SachetBank Terminal Ledger...</div>
+        <div class="loader-text" id="loader-text">Loading SachetBank Terminals...</div>
     </div>
 
     <!-- Sidebar -->
@@ -529,13 +529,13 @@
             }
 
             if (toGeocode.length > 0) {
-                loaderText.innerText = `Geocoding new terminals (0/${toGeocode.length})...`;
+                loaderText.innerText = `Locating new terminals (0/${toGeocode.length})...`;
                 
                 // Geocode sequentially with 1 second delay to respect Nominatim usage policy
                 for (let i = 0; i < toGeocode.length; i++) {
                     const agg = toGeocode[i];
                     const address = agg.Street_Address;
-                    loaderText.innerText = `Geocoding: ${agg.Shop_Name} (${i + 1}/${toGeocode.length})...`;
+                    loaderText.innerText = `Locating: ${agg.Shop_Name} (${i + 1}/${toGeocode.length})...`;
                     
                     try {
                         // Append "Lagos, Nigeria" to target region if not present
