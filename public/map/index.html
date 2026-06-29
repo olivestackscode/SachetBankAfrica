@@ -3,191 +3,789 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SachetBank Africa | Turning Waste into Wealth</title>
-    <!-- FontAwesome for WhatsApp Icon -->
+    <title>SachetBank - Aggregator Map Viewer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-50 text-slate-900 font-sans">
 
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-6 md:px-10 py-4 flex justify-between items-center">
-            <!-- Logo -->
-            <div class="text-2xl font-black text-emerald-600">
-                <a href="index.html">SachetBank</a>
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: rgba(17, 24, 39, 0.7);
+            --bg-card: rgba(31, 41, 55, 0.5);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent: #10b981; /* Emerald green */
+            --accent-glow: rgba(16, 185, 129, 0.3);
+            --border: rgba(75, 85, 99, 0.3);
+            --font-outfit: 'Outfit', sans-serif;
+            --font-inter: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-inter);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 400px;
+            height: 100%;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .brand img {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .brand h1 {
+            font-family: var(--font-outfit);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #ffffff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Search Controls */
+        .search-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            background: rgba(17, 24, 39, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: var(--font-inter);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .locate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent), #059669);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-family: var(--font-outfit);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .locate-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .locate-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Aggregator List */
+        .aggregator-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Scrollbar styling */
+        .aggregator-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .aggregator-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .aggregator-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+        .aggregator-list::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        .aggregator-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .aggregator-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: var(--accent);
+            transition: width 0.2s;
+        }
+
+        .aggregator-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            transform: translateX(4px);
+            background: rgba(31, 41, 55, 0.7);
+        }
+
+        .aggregator-card.active {
+            border-color: var(--accent);
+            background: rgba(16, 185, 129, 0.05);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+        }
+
+        .aggregator-card.active::before {
+            width: 4px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .shop-name {
+            font-family: var(--font-outfit);
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .distance-badge {
+            background: var(--accent-glow);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .card-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .card-detail i {
+            width: 16px;
+            color: var(--accent);
+        }
+
+        /* Map Container */
+        #map {
+            flex: 1;
+            height: 100%;
+            background-color: #0b0f19;
+        }
+
+        /* Custom Map Marker styles */
+        .user-location-marker {
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+            position: relative;
+        }
+
+        .user-location-marker::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #3b82f6;
+            border-radius: 50%;
+            left: -13px;
+            top: -13px;
+            animation: pulse-ring 1.8s infinite;
+            opacity: 0;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Leaflet Popup Styling Override */
+        .leaflet-popup-content-wrapper {
+            background: #111827 !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 12px !important;
+            padding: 6px !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        .leaflet-popup-tip {
+            background: #111827 !important;
+            border: 1px solid var(--border) !important;
+        }
+
+        .popup-container {
+            font-family: var(--font-inter);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 200px;
+        }
+
+        .popup-title {
+            font-family: var(--font-outfit);
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 6px;
+            margin-bottom: 4px;
+        }
+
+        .popup-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .popup-row i {
+            color: var(--accent);
+            width: 14px;
+        }
+
+        .popup-btn {
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .popup-btn:hover {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        /* Loading Overlay */
+        .loader-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.9);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            transition: opacity 0.4s ease;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(16, 185, 129, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            font-family: var(--font-outfit);
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column-reverse;
+            }
+            .sidebar {
+                width: 100%;
+                height: 50%;
+            }
+            #map {
+                height: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Overlay -->
+    <div class="loader-overlay" id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text" id="loader-text">Loading SachetBank Terminals...</div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <img src="https://sachet-bank-africa.vercel.app/assets/SachetBank-logo.jpeg" alt="SachetBank Logo">
+                <div>
+                    <h1>SachetBank</h1>
+                    <span style="font-size: 11px; color: var(--text-secondary); letter-spacing: 0.5px;">TERMINAL FINDER</span>
+                </div>
             </div>
             
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center gap-8 font-semibold text-slate-650">
-                <a href="about-us.html" class="hover:text-emerald-600 transition">About Us</a>
-                <a href="contact.html" class="hover:text-emerald-600 transition">Contact Us</a>
-                <a href="map-viewer.html" class="hover:text-emerald-600 transition">Find Terminals</a>
-                <a href="https://wa.me/+15556780493" class="bg-emerald-600 text-white px-5 py-2 rounded-full hover:bg-emerald-700 transition flex items-center gap-2 text-sm">
-                    <i class="fab fa-whatsapp text-base"></i>
-                    <span>Get Started</span>
-                </a>
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="search-input" id="search-input" placeholder="Search by shop name or address...">
             </div>
-
-            <!-- Mobile Menu Button (Hamburger) -->
-            <button id="mobile-menu-btn" class="md:hidden text-slate-700 hover:text-emerald-600 focus:outline-none" aria-label="Toggle Menu">
-                <i class="fas fa-bars text-2xl"></i>
+            
+            <button class="locate-btn" id="locate-btn">
+                <i class="fa-solid fa-location-crosshairs"></i> Locate Nearest Terminal
             </button>
         </div>
 
-        <!-- Mobile Dropdown Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 px-6 py-4 space-y-4 shadow-inner">
-            <a href="about-us.html" class="block font-semibold text-slate-700 hover:text-emerald-600 py-1">About Us</a>
-            <a href="contact.html" class="block font-semibold text-slate-700 hover:text-emerald-600 py-1">Contact Us</a>
-            <a href="map-viewer.html" class="block font-semibold text-slate-700 hover:text-emerald-600 py-1">Find Terminals</a>
-            <a href="https://wa.me/+15556780493" class="w-full bg-emerald-600 text-white px-5 py-2.5 rounded-full font-bold hover:bg-emerald-700 transition flex items-center justify-center gap-2 text-sm">
-                <i class="fab fa-whatsapp text-base"></i>
-                <span>Get Started on WhatsApp</span>
-            </a>
+        <div class="aggregator-list" id="aggregator-list">
+            <!-- Aggregators dynamically loaded here -->
         </div>
-    </nav>
+    </div>
 
-    <header class="py-20 px-10 text-center">
-        <h1 class="text-5xl font-black mb-6">Turning Sachet Waste into<br><span class="text-emerald-600">Nutritious Food Rewards</span></h1>
-        <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-10">We help communities clean their environment by aggregating plastic sachet waste. Deposit your plastic, earn points, and redeem them for food items at local partner terminals.</p>
-        <div class="flex gap-4 justify-center">
-            <a href="#how-it-works" class="border-2 border-slate-900 px-8 py-3 rounded-lg font-bold">How it Works</a>
-        </div>
-    </header>
+    <!-- Map View -->
+    <div id="map"></div>
 
-    <section id="how-it-works" class="py-20 px-6 md:px-10 bg-white">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl font-black text-center mb-12">How It Works</h2>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <!-- Step 1 -->
-                <div class="p-6 border rounded-xl flex flex-col justify-between">
-                    <div>
-                        <i class="fas fa-map-marker-alt text-4xl text-emerald-600 mb-4 block"></i>
-                        <h3 class="font-bold text-xl mb-2">1. Locate & Onboard</h3>
-                        <p class="text-slate-600 text-sm mb-4">
-                            <strong>Find Your Local Node.</strong> Look out for the official SachetBank Banner at local shops on your street. Walk up to the shop owner and they will instantly register your WhatsApp phone number to activate your digital wallet.
-                        </p>
-                    </div>
-                    <div class="mt-2 text-emerald-850 bg-emerald-50 p-3 rounded-lg text-xs flex items-start gap-2">
-                        <i class="fas fa-gift text-emerald-600 mt-0.5"></i>
-                        <span><strong>Welcome Gift:</strong> We’ll hand you a Mesh Bag completely free to start your sachet waste storing journey at home!</span>
-                    </div>
-                </div>
-
-                <!-- Step 2 -->
-                <div class="p-6 border rounded-xl flex flex-col justify-between">
-                    <div>
-                        <i class="fas fa-recycle text-4xl text-emerald-600 mb-4 block"></i>
-                        <h3 class="font-bold text-xl mb-2">2. Store Clean & Dry</h3>
-                        <p class="text-slate-600 text-sm mb-4">
-                            <strong>Store only PURE WATER Sachets.</strong> Hang your mesh bag in your kitchen. Ensure the sachets are completely empty of water, clean, and dry, then toss it inside.
-                        </p>
-                    </div>
-                    <div class="mt-2 text-amber-800 bg-amber-50 p-3 rounded-lg text-xs flex items-start gap-2">
-                        <i class="fas fa-exclamation-triangle text-amber-500 mt-0.5"></i>
-                        <span><strong>Quality Matters:</strong> Our downstream fashion house, DunsinCrafts, weaves these sachet nylons into high-end luxury art. Because of this, dirty or mixed landfill waste will be rejected!</span>
-                    </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="p-6 border rounded-xl flex flex-col justify-between">
-                    <div>
-                        <i class="fas fa-weight-hanging text-4xl text-emerald-600 mb-4 block"></i>
-                        <h3 class="font-bold text-xl mb-2">3. Drop Off & Mint</h3>
-                        <p class="text-slate-600 text-sm mb-4">
-                            <strong>Weigh and Record Instantly.</strong> Once your mesh bag is full, bring it back to the terminal where you registered. The shop owner will weigh it, take a quick photo for ledger verification, and enter the weight into our system.
-                        </p>
-                    </div>
-                    <div class="mt-2 text-emerald-850 bg-emerald-50 p-3 rounded-lg text-xs flex items-start gap-2">
-                        <i class="fas fa-mobile-alt text-emerald-600 mt-0.5"></i>
-                        <span><strong>Instant Receipt:</strong> The exact moment the weight is logged, you will receive an automated WhatsApp receipt showing your new wallet balance. 1 KG of pristine waste = 50 Points added directly to your digital wallet.</span>
-                    </div>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="p-6 border rounded-xl flex flex-col justify-between">
-                    <div>
-                        <i class="fas fa-shopping-basket text-4xl text-emerald-600 mb-4 block"></i>
-                        <h3 class="font-bold text-xl mb-2">4. Redeem Rewards</h3>
-                        <p class="text-slate-600 text-sm mb-4">
-                            <strong>Shop with Your Waste.</strong> You can choose to keep increasing your wallet points or use your available balance right there at the counter to unlock essential household food items:
-                        </p>
-                        <ul class="text-xs text-slate-700 bg-slate-50 p-3 rounded-lg mb-4 space-y-1">
-                            <li class="flex justify-between border-b border-slate-100 pb-1"><span><i class="fas fa-seedling text-emerald-600 mr-1 w-4 inline-block text-center"></i>Garri (1 Cup):</span> <span class="font-bold">50 Pts</span></li>
-                            <li class="flex justify-between border-b border-slate-100 pb-1"><span><i class="fas fa-bowl-rice text-emerald-600 mr-1 w-4 inline-block text-center"></i>Rice (1 Cup):</span> <span class="font-bold">220 Pts</span></li>
-                            <li class="flex justify-between border-b border-slate-100 pb-1"><span><i class="fas fa-seedling text-emerald-600 mr-1 w-4 inline-block text-center"></i>Beans (1 Cup):</span> <span class="font-bold">220 Pts</span></li>
-                            <li class="flex justify-between border-b border-slate-100 pb-1"><span><i class="fas fa-egg text-emerald-600 mr-1 w-4 inline-block text-center"></i>Eggs (1 Unit):</span> <span class="font-bold">250 Pts</span></li>
-                            <li class="flex justify-between border-b border-slate-100 pb-1"><span><i class="fas fa-utensils text-emerald-600 mr-1 w-4 inline-block text-center"></i>Noodles (1 Sachet):</span> <span class="font-bold">250 Pts</span></li>
-                            <li class="flex justify-between border-b border-slate-100 pb-1"><span><i class="fas fa-bottle-droplet text-emerald-600 mr-1 w-4 inline-block text-center"></i>Palm Oil (1 Cup):</span> <span class="font-bold">330 Pts</span></li>
-                            <li class="flex justify-between border-b border-slate-100 pb-1"><span><i class="fas fa-droplet text-emerald-600 mr-1 w-4 inline-block text-center"></i>Vegetable Oil (1 Cup):</span> <span class="font-bold">400 Pts</span></li>
-                        </ul>
-                        <p class="text-slate-600 text-xs">
-                            Select Redeem Reward, fill your cart, click Checkout Now, and the shop owner will hand over your fresh groceries instantly. Take your empty mesh bag back home, and repeat the cycle!
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Leaderboard Banner -->
-            <div class="p-8 border rounded-xl bg-slate-50 mb-12">
-                <h3 class="font-bold text-xl mb-3 flex items-center gap-2">
-                    Climb the Leaderboard
-                </h3>
-                <p class="text-slate-600 text-sm leading-relaxed">
-                    Every single kilogram of sachets you donate doesn't just feed your household, it keeps your neighborhood waste free. Select <strong>Donor Leaderboard</strong> on your WhatsApp chat at any time to see where you rank among the top donors in your zone. High ranking donors get exclusive community bragging rights and a chance to win amazing cash prizes at the end of the year!
-                </p>
-            </div>
-
-            <!-- Find a SachetBank Terminal Near Me Button -->
-            <div class="text-center">
-                <a href="map" class="inline-block bg-emerald-600 text-white px-8 py-3.5 rounded-lg font-bold hover:bg-emerald-700 transition">
-                    Find Terminals Near Me
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 px-6 md:px-10 bg-slate-50 border-t border-slate-100">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl font-black mb-4">Contact Us</h2>
-            <p class="text-slate-600 mb-8 max-w-xl mx-auto">Have questions about SachetBank, partnering with us, or registering as an aggregator? Get in touch with us directly on WhatsApp.</p>
-            <a href="https://wa.me/+15556780493" class="inline-flex items-center gap-2 bg-emerald-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-700 transition">
-                <i class="fab fa-whatsapp text-xl"></i>
-                <span>Chat with SachetBank Support</span>
-            </a>
-        </div>
-    </section>
-
-    <footer class="py-10 text-center text-slate-500 text-sm">
-        &copy; 2026 SachetBank Africa. Banking on a Cleaner Africa
-    </footer>
+    <!-- Leaflet.js Script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = menuBtn.querySelector('i');
+        // Initialize Map
+        const map = L.map('map', {
+            zoomControl: false
+        }).setView([6.4549, 3.3896], 12); // Centered on Lagos by default
+        
+        // Add zoom control at bottom right
+        L.control.zoom({
+            position: 'bottomright'
+        }).addTo(map);
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            if (mobileMenu.classList.contains('hidden')) {
-                menuIcon.classList.remove('fa-xmark');
-                menuIcon.classList.add('fa-bars');
-            } else {
-                menuIcon.classList.remove('fa-bars');
-                menuIcon.classList.add('fa-xmark');
+        // Dark theme map tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+
+        let aggregators = [];
+        let markers = {};
+        let userLocation = null;
+        let userMarker = null;
+        
+        // LocalStorage Caching for Geocoding to prevent hitting Nominatim rate limits
+        const GEO_CACHE_KEY = 'sachetbank_geo_cache';
+        let geoCache = JSON.parse(localStorage.getItem(GEO_CACHE_KEY)) || {};
+
+        function saveGeoCache() {
+            localStorage.setItem(GEO_CACHE_KEY, JSON.stringify(geoCache));
+        }
+
+        // Haversine formula to calculate distance
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the earth in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2); 
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+            const d = R * c; // Distance in km
+            return d;
+        }
+
+        // Fetch Aggregators from map.php
+        async function loadAggregators() {
+            try {
+                const response = await fetch('https://api.presibo.com/sachetbank/map.php');
+                const result = await response.json();
+                if (result.status === 'success') {
+                    aggregators = result.data;
+                    await geocodeAggregators();
+                } else {
+                    alert('Error loading aggregators from server.');
+                }
+            } catch (error) {
+                console.error('Error fetching aggregators:', error);
+                alert('Could not connect to map.php endpoint.');
             }
-        });
+        }
 
-        // Close mobile menu when clicking a link
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                menuIcon.classList.remove('fa-xmark');
-                menuIcon.classList.add('fa-bars');
+        // Geocode addresses (converting text addresses to coordinates)
+        async function geocodeAggregators() {
+            const loaderText = document.getElementById('loader-text');
+            let needToSave = false;
+            
+            // Queue of aggregators that need geocoding
+            const toGeocode = [];
+            for (const agg of aggregators) {
+                const address = agg.Street_Address;
+                if (geoCache[address]) {
+                    agg.lat = geoCache[address].lat;
+                    agg.lng = geoCache[address].lng;
+                } else {
+                    toGeocode.push(agg);
+                }
+            }
+
+            if (toGeocode.length > 0) {
+                loaderText.innerText = `Locating new terminals (0/${toGeocode.length})...`;
+                
+                // Geocode sequentially with 1 second delay to respect Nominatim usage policy
+                for (let i = 0; i < toGeocode.length; i++) {
+                    const agg = toGeocode[i];
+                    const address = agg.Street_Address;
+                    loaderText.innerText = `Locating: ${agg.Shop_Name} (${i + 1}/${toGeocode.length})...`;
+                    
+                    try {
+                        // Append "Lagos, Nigeria" to target region if not present
+                        let searchQuery = address;
+                        if (!searchQuery.toLowerCase().includes('nigeria')) {
+                            searchQuery += ', Lagos, Nigeria';
+                        }
+                        
+                        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(searchQuery)}`, {
+                            headers: {
+                                'User-Agent': 'SachetBankTerminalFinder/1.0'
+                            }
+                        });
+                        const data = await res.json();
+                        
+                        if (data && data.length > 0) {
+                            agg.lat = parseFloat(data[0].lat);
+                            agg.lng = parseFloat(data[0].lon);
+                            geoCache[address] = { lat: agg.lat, lng: agg.lng };
+                            needToSave = true;
+                        } else {
+                            // Fallback to center of Lagos if geocoding fails completely
+                            console.warn(`Could not geocode address: ${address}`);
+                            agg.lat = 6.4549 + (Math.random() - 0.5) * 0.1;
+                            agg.lng = 3.3896 + (Math.random() - 0.5) * 0.1;
+                        }
+                    } catch (err) {
+                        console.error('Geocoding error:', err);
+                        // Fallback on error
+                        agg.lat = 6.4549 + (Math.random() - 0.5) * 0.1;
+                        agg.lng = 3.3896 + (Math.random() - 0.5) * 0.1;
+                    }
+                    
+                    // Delay for 1.1s
+                    await new Promise(resolve => setTimeout(resolve, 1100));
+                }
+            }
+
+            if (needToSave) {
+                saveGeoCache();
+            }
+
+            // Hide Loader
+            document.getElementById('loader').style.opacity = 0;
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+            }, 400);
+
+            // Render markers and list
+            renderMapAndSidebar();
+        }
+
+        // Render Sidebar Cards and Map Markers
+        function renderMapAndSidebar() {
+            const listContainer = document.getElementById('aggregator-list');
+            listContainer.innerHTML = '';
+            
+            // Clear existing markers
+            for (const id in markers) {
+                map.removeLayer(markers[id]);
+            }
+            markers = {};
+
+            // Calculate distance if user location is available
+            if (userLocation) {
+                aggregators.forEach(agg => {
+                    agg.distance = calculateDistance(userLocation.lat, userLocation.lng, agg.lat, agg.lng);
+                });
+                // Sort by distance (closest first)
+                aggregators.sort((a, b) => a.distance - b.distance);
+            }
+
+            // Define custom Emerald Icon for Aggregators
+            const emeraldIcon = L.divIcon({
+                html: `<div style="
+                    width: 14px;
+                    height: 14px;
+                    background: #10b981;
+                    border: 2px solid #ffffff;
+                    border-radius: 50%;
+                    box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+                "></div>`,
+                className: 'custom-emerald-marker',
+                iconSize: [14, 14],
+                iconAnchor: [7, 7]
+            });
+
+            const bounds = L.latLngBounds();
+
+            aggregators.forEach(agg => {
+                // 1. Create Map Marker
+                const marker = L.marker([agg.lat, agg.lng], { icon: emeraldIcon }).addTo(map);
+                
+                const popupContent = `
+                    <div class="popup-container">
+                        <div class="popup-title">${agg.Shop_Name}</div>
+                        <div class="popup-row">
+                            <i class="fa-solid fa-hashtag"></i>
+                            <span>ID: ${agg.Aggregator_ID}</span>
+                        </div>
+                        <div class="popup-row">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>${agg.Street_Address}</span>
+                        </div>
+                        <div class="popup-row">
+                            <i class="fa-solid fa-phone"></i>
+                            <span>${agg.Owner_Phone}</span>
+                        </div>
+                        <a href="https://wa.me/${agg.Owner_Phone}" target="_blank" class="popup-btn">
+                            <i class="fa-brands fa-whatsapp"></i> Chat with Terminal
+                        </a>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                markers[agg.Aggregator_ID] = marker;
+                
+                bounds.extend([agg.lat, agg.lng]);
+
+                // 2. Create Sidebar Card
+                const card = document.createElement('div');
+                card.className = `aggregator-card` ;
+                card.id = `card-${agg.Aggregator_ID}`;
+                
+                const distHtml = agg.distance !== undefined 
+                    ? `<span class="distance-badge">${agg.distance.toFixed(2)} km</span>` 
+                    : '';
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="shop-name">${agg.Shop_Name}</div>
+                        ${distHtml}
+                    </div>
+                    <div class="card-detail">
+                        <i class="fa-solid fa-hashtag"></i>
+                        <span>ID: ${agg.Aggregator_ID}</span>
+                    </div>
+                    <div class="card-detail">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>${agg.Street_Address}</span>
+                    </div>
+                    <div class="card-detail">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>${agg.Owner_Phone}</span>
+                    </div>
+                `;
+
+                // Handle Card Click
+                card.addEventListener('click', () => {
+                    highlightAggregator(agg);
+                });
+
+                listContainer.appendChild(card);
+            });
+
+            // Fit map bounds to include all markers
+            if (aggregators.length > 0 && !userLocation) {
+                map.fitBounds(bounds, { padding: [50, 50] });
+            }
+        }
+
+        // Highlight selected aggregator (zoom, pan, open popup, active card state)
+        function highlightAggregator(agg) {
+            // Remove active classes
+            document.querySelectorAll('.aggregator-card').forEach(c => c.classList.remove('active'));
+            
+            const card = document.getElementById(`card-${agg.Aggregator_ID}`);
+            if (card) {
+                card.classList.add('active');
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            map.setView([agg.lat, agg.lng], 15);
+            markers[agg.Aggregator_ID].openPopup();
+        }
+
+        // Search/Filter function
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            
+            aggregators.forEach(agg => {
+                const card = document.getElementById(`card-${agg.Aggregator_ID}`);
+                const matches = agg.Shop_Name.toLowerCase().includes(query) || 
+                                agg.Street_Address.toLowerCase().includes(query) ||
+                                agg.Aggregator_ID.toLowerCase().includes(query);
+                
+                if (matches) {
+                    if (card) card.style.display = 'block';
+                    if (markers[agg.Aggregator_ID]) map.addLayer(markers[agg.Aggregator_ID]);
+                } else {
+                    if (card) card.style.display = 'none';
+                    if (markers[agg.Aggregator_ID]) map.removeLayer(markers[agg.Aggregator_ID]);
+                }
             });
         });
+
+        // Geolocate User
+        document.getElementById('locate-btn').addEventListener('click', () => {
+            const btn = document.getElementById('locate-btn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Locating...';
+            
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser.');
+                btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Locate Nearest Terminal';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    // Add/Move User Marker on Map
+                    if (userMarker) {
+                        userMarker.setLatLng([userLocation.lat, userLocation.lng]);
+                    } else {
+                        const userIcon = L.divIcon({
+                            className: 'user-location-marker-container',
+                            html: '<div class="user-location-marker"></div>',
+                            iconSize: [20, 20],
+                            iconAnchor: [10, 10]
+                        });
+                        userMarker = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon }).addTo(map);
+                        userMarker.bindPopup('<div style="font-family: var(--font-outfit); font-weight:600; font-size:13px; text-align:center;">Your Location</div>');
+                    }
+
+                    // Recalculate distances and re-sort
+                    renderMapAndSidebar();
+
+                    // Pan to user location and zoom out slightly to show closest
+                    map.setView([userLocation.lat, userLocation.lng], 13);
+                    
+                    btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Located!';
+                    setTimeout(() => {
+                        btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Locate Nearest Terminal';
+                    }, 3000);
+                },
+                (error) => {
+                    console.error('Geolocation error:', error);
+                    alert('Could not determine your location. Please check your browser permissions.');
+                    btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Locate Nearest Terminal';
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        });
+
+        // Initialize App
+        window.addEventListener('load', loadAggregators);
     </script>
 </body>
 </html>
