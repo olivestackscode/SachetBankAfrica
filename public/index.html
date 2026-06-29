@@ -1,248 +1,123 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SachetBank Africa | Turning Waste into Wealth</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
+    <!-- FontAwesome for WhatsApp Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        outfit: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        emerald: {
-                            50: '#ecfdf5',
-                            100: '#d1fae5',
-                            200: '#a7f3d0',
-                            300: '#6ee7b7',
-                            400: '#34d399',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
-                            800: '#065f46',
-                            900: '#064e3b',
-                            950: '#022c22',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-emerald-500 selection:text-white">
+<body class="bg-slate-50 text-slate-900 font-sans">
 
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-slate-100 py-4 px-6 md:px-12 flex justify-between items-center">
-        <div class="flex items-center gap-2">
-            <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-black text-xl shadow-md shadow-emerald-200">S</div>
-            <span class="text-2xl font-black font-outfit bg-gradient-to-r from-slate-900 to-emerald-700 bg-clip-text text-transparent">SachetBank</span>
-        </div>
-        <a href="https://wa.me/+15556780493" class="bg-emerald-600 text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-100 transition-all duration-200 whitespace-nowrap flex items-center gap-2">
+    <nav class="flex justify-between items-center py-6 px-10 bg-white shadow-sm">
+        <div class="text-2xl font-black text-emerald-600">SachetBank</div>
+        <a href="https://wa.me/+15556780493" class="bg-emerald-600 text-white px-6 py-2.5 rounded-full font-bold hover:bg-emerald-700 transition flex items-center gap-2">
             <i class="fab fa-whatsapp text-lg"></i>
-            <span>Get Started</span>
+            <span>Get Started on WhatsApp</span>
         </a>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="relative overflow-hidden py-16 md:py-28 px-6 md:px-12 text-center max-w-6xl mx-auto">
-        <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-3xl -z-10"></div>
-        <div class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border border-emerald-100">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Empowering Communities, Cleaning Environments
-        </div>
-        <h1 class="text-4xl md:text-6xl font-black font-outfit mb-6 leading-tight tracking-tight text-slate-950">
-            Turning Sachet Waste into <br>
-            <span class="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">Nutritious Food Rewards</span>
-        </h1>
-        <p class="text-base md:text-xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed">
-            We help communities clean their environment by aggregating plastic sachet waste. Deposit your plastic, earn points, and redeem them for food items at local partner terminals.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="#how-it-works" class="w-full sm:w-auto bg-slate-900 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-slate-800 hover:shadow-lg transition-all duration-200">
-                How It Works
-            </a>
-            <a href="map-viewer.html" class="w-full sm:w-auto border border-slate-200 bg-white text-slate-700 px-8 py-3.5 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 flex items-center justify-center gap-2">
-                <i class="fas fa-map-marked-alt text-emerald-600"></i>
-                Find a Terminal
-            </a>
+    <header class="py-20 px-10 text-center">
+        <h1 class="text-5xl font-black mb-6">Turning Sachet Waste into<br><span class="text-emerald-600">Nutritious Food Rewards</span></h1>
+        <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-10">We help communities clean their environment by aggregating plastic sachet waste. Deposit your plastic, earn points, and redeem them for food items at local partner terminals.</p>
+        <div class="flex gap-4 justify-center">
+            <a href="#how-it-works" class="border-2 border-slate-900 px-8 py-3 rounded-lg font-bold">How it Works</a>
         </div>
     </header>
 
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="py-20 bg-white border-y border-slate-100">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-black font-outfit text-slate-950 mb-4">How It Works</h2>
-                <p class="text-slate-500 max-w-2xl mx-auto">Start your journey toward a cleaner neighborhood and a rewarded household in four simple steps.</p>
-            </div>
-
-            <!-- Steps Grid -->
-            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
-                
+    <section id="how-it-works" class="py-20 px-6 md:px-10 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-black text-center mb-12">How It Works</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 <!-- Step 1 -->
-                <div class="group relative bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-emerald-200 hover:bg-white hover:shadow-xl hover:shadow-emerald-50/20 transition-all duration-300 flex flex-col justify-between">
+                <div class="p-6 border rounded-xl flex flex-col justify-between">
                     <div>
-                        <div class="absolute -top-4 -left-4 w-10 h-10 rounded-xl bg-emerald-600 text-white font-bold flex items-center justify-center shadow-lg shadow-emerald-200">1</div>
-                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <h3 class="font-bold font-outfit text-xl text-slate-900 mb-3">Locate & Onboard</h3>
-                        <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-4">
-                            <strong class="text-slate-900 font-semibold">Find Your Local Node.</strong> Look out for the official SachetBank Banner at local shops on your street. Walk up to the shop owner and they will instantly register your WhatsApp phone number to activate your digital wallet.
+                        <div class="text-4xl mb-4">📍</div>
+                        <h3 class="font-bold text-xl mb-2">1. Locate & Onboard</h3>
+                        <p class="text-slate-600 text-sm mb-4">
+                            <strong>Find Your Local Node.</strong> Look out for the official SachetBank Banner at local shops on your street. Walk up to the shop owner and they will instantly register your WhatsApp phone number to activate your digital wallet.
                         </p>
                     </div>
-                    <div class="mt-4 bg-emerald-50/70 border border-emerald-100/50 rounded-xl p-4 flex gap-3 items-start">
-                        <span class="text-xl">🎁</span>
-                        <p class="text-xs md:text-sm text-emerald-800 leading-relaxed">
-                            <strong class="font-bold text-emerald-950">Welcome Gift:</strong> We’ll hand you a Mesh Bag completely free to start your sachet waste storing journey at home!
-                        </p>
+                    <div class="mt-2 text-emerald-800 bg-emerald-50 p-3 rounded-lg text-xs">
+                        🎁 <strong>Welcome Gift:</strong> We’ll hand you a Mesh Bag completely free to start your sachet waste storing journey at home!
                     </div>
                 </div>
 
                 <!-- Step 2 -->
-                <div class="group relative bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-emerald-200 hover:bg-white hover:shadow-xl hover:shadow-emerald-50/20 transition-all duration-300 flex flex-col justify-between">
+                <div class="p-6 border rounded-xl flex flex-col justify-between">
                     <div>
-                        <div class="absolute -top-4 -left-4 w-10 h-10 rounded-xl bg-emerald-600 text-white font-bold flex items-center justify-center shadow-lg shadow-emerald-200">2</div>
-                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-recycle"></i>
-                        </div>
-                        <h3 class="font-bold font-outfit text-xl text-slate-900 mb-3">Store Clean & Dry Sachets</h3>
-                        <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-4">
-                            <strong class="text-slate-900 font-semibold">Store only PURE WATER Sachets.</strong> Hang your mesh bag in your kitchen. Ensure the sachets are completely empty of water, clean, and dry, then toss it inside.
+                        <div class="text-4xl mb-4">🧺</div>
+                        <h3 class="font-bold text-xl mb-2">2. Store Clean & Dry</h3>
+                        <p class="text-slate-600 text-sm mb-4">
+                            <strong>Store only PURE WATER Sachets.</strong> Hang your mesh bag in your kitchen. Ensure the sachets are completely empty of water, clean, and dry, then toss it inside.
                         </p>
                     </div>
-                    <div class="mt-4 bg-amber-50 border border-amber-100 rounded-xl p-4 flex gap-3 items-start">
-                        <span class="text-xl">⚠️</span>
-                        <p class="text-xs md:text-sm text-amber-800 leading-relaxed">
-                            <strong class="font-bold text-amber-950">Quality Matters:</strong> Our downstream fashion house, <span class="font-semibold text-amber-900">DunsinCrafts</span>, weaves these sachet nylons into high-end luxury art. Because of this, dirty or mixed landfill waste will be rejected!
-                        </p>
+                    <div class="mt-2 text-amber-800 bg-amber-50 p-3 rounded-lg text-xs">
+                        ⚠️ <strong>Quality Matters:</strong> Our downstream fashion house, DunsinCrafts, weaves these sachet nylons into high-end luxury art. Because of this, dirty or mixed landfill waste will be rejected!
                     </div>
                 </div>
 
                 <!-- Step 3 -->
-                <div class="group relative bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-emerald-200 hover:bg-white hover:shadow-xl hover:shadow-emerald-50/20 transition-all duration-300 flex flex-col justify-between">
+                <div class="p-6 border rounded-xl flex flex-col justify-between">
                     <div>
-                        <div class="absolute -top-4 -left-4 w-10 h-10 rounded-xl bg-emerald-600 text-white font-bold flex items-center justify-center shadow-lg shadow-emerald-200">3</div>
-                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-weight-hanging"></i>
-                        </div>
-                        <h3 class="font-bold font-outfit text-xl text-slate-900 mb-3">Drop Off & Mint Points</h3>
-                        <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-4">
-                            <strong class="text-slate-900 font-semibold">Weigh and Record Instantly.</strong> Once your mesh bag is full, bring it back to the terminal where you registered. The shop owner will weigh it, take a quick photo for ledger verification, and enter the weight into our system.
+                        <div class="text-4xl mb-4">⚖️</div>
+                        <h3 class="font-bold text-xl mb-2">3. Drop Off & Mint</h3>
+                        <p class="text-slate-600 text-sm mb-4">
+                            <strong>Weigh and Record Instantly.</strong> Once your mesh bag is full, bring it back to the terminal where you registered. The shop owner will weigh it, take a quick photo for ledger verification, and enter the weight into our system.
                         </p>
                     </div>
-                    <div class="mt-4 bg-emerald-50/70 border border-emerald-100/50 rounded-xl p-4 flex gap-3 items-start">
-                        <span class="text-xl">📱</span>
-                        <p class="text-xs md:text-sm text-emerald-800 leading-relaxed">
-                            <strong class="font-bold text-emerald-950">Instant Receipt:</strong> The exact moment the weight is logged, you will receive an automated WhatsApp receipt showing your new wallet balance. <span class="underline decoration-emerald-500 decoration-2 font-semibold text-emerald-900">1 KG of pristine waste = 50 Points</span> added directly to your digital wallet.
-                        </p>
+                    <div class="mt-2 text-emerald-800 bg-emerald-50 p-3 rounded-lg text-xs">
+                        📱 <strong>Instant Receipt:</strong> The exact moment the weight is logged, you will receive an automated WhatsApp receipt showing your new wallet balance. 1 KG of pristine waste = 50 Points added directly to your digital wallet.
                     </div>
                 </div>
 
                 <!-- Step 4 -->
-                <div class="group relative bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:border-emerald-200 hover:bg-white hover:shadow-xl hover:shadow-emerald-50/20 transition-all duration-300 flex flex-col justify-between">
+                <div class="p-6 border rounded-xl flex flex-col justify-between">
                     <div>
-                        <div class="absolute -top-4 -left-4 w-10 h-10 rounded-xl bg-emerald-600 text-white font-bold flex items-center justify-center shadow-lg shadow-emerald-200">4</div>
-                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-shopping-basket"></i>
-                        </div>
-                        <h3 class="font-bold font-outfit text-xl text-slate-900 mb-3">Redeem Food Rewards</h3>
-                        <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-4">
-                            <strong class="text-slate-900 font-semibold">Shop with Your Waste.</strong> You can choose to keep increasing your wallet points or use your available balance right there at the counter to unlock essential household food items.
+                        <div class="text-4xl mb-4">🍲</div>
+                        <h3 class="font-bold text-xl mb-2">4. Redeem Rewards</h3>
+                        <p class="text-slate-600 text-sm mb-4">
+                            <strong>Shop with Your Waste.</strong> You can choose to keep increasing your wallet points or use your available balance right there at the counter to unlock essential household food items:
                         </p>
-                        
-                        <!-- Food Rewards List -->
-                        <div class="bg-white group-hover:bg-slate-50 border border-slate-100 rounded-xl p-4 mb-4 transition-colors duration-300">
-                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Available Rewards</span>
-                            <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs md:text-sm">
-                                <div class="flex justify-between border-b border-dashed border-slate-100 pb-1">
-                                    <span class="text-slate-700">🌾 Garri (1 Cup)</span>
-                                    <span class="font-bold text-emerald-600">50 pts</span>
-                                </div>
-                                <div class="flex justify-between border-b border-dashed border-slate-100 pb-1">
-                                    <span class="text-slate-700">🍚 Rice (1 Cup)</span>
-                                    <span class="font-bold text-emerald-600">220 pts</span>
-                                </div>
-                                <div class="flex justify-between border-b border-dashed border-slate-100 pb-1">
-                                    <span class="text-slate-700">🫘 Beans (1 Cup)</span>
-                                    <span class="font-bold text-emerald-600">220 pts</span>
-                                </div>
-                                <div class="flex justify-between border-b border-dashed border-slate-100 pb-1">
-                                    <span class="text-slate-700">🥚 Eggs (1 Unit)</span>
-                                    <span class="font-bold text-emerald-600">250 pts</span>
-                                </div>
-                                <div class="flex justify-between border-b border-dashed border-slate-100 pb-1">
-                                    <span class="text-slate-700">🍜 Noodles (1 Sachet)</span>
-                                    <span class="font-bold text-emerald-600">250 pts</span>
-                                </div>
-                                <div class="flex justify-between border-b border-dashed border-slate-100 pb-1">
-                                    <span class="text-slate-700">🧴 Palm Oil (1 Cup)</span>
-                                    <span class="font-bold text-emerald-600">330 pts</span>
-                                </div>
-                                <div class="flex justify-between col-span-2 border-b border-dashed border-slate-100 pb-1">
-                                    <span class="text-slate-700">🌻 Vegetable Oil (1 Cup)</span>
-                                    <span class="font-bold text-emerald-600">400 pts</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <p class="text-slate-600 text-xs md:text-sm leading-relaxed">
-                            Select <span class="font-semibold text-slate-850">Redeem Reward</span>, fill your cart, click <span class="font-semibold text-slate-850">Checkout Now</span>, and the shop owner will hand over your fresh groceries instantly. Take your empty mesh bag back home, and repeat the cycle!
+                        <ul class="text-xs text-slate-700 bg-slate-50 p-3 rounded-lg mb-4 space-y-1">
+                            <li class="flex justify-between border-b border-slate-100 pb-1"><span>Garri (1 Cup):</span> <span class="font-bold">50 Pts</span></li>
+                            <li class="flex justify-between border-b border-slate-100 pb-1"><span>Rice (1 Cup):</span> <span class="font-bold">220 Pts</span></li>
+                            <li class="flex justify-between border-b border-slate-100 pb-1"><span>Beans (1 Cup):</span> <span class="font-bold">220 Pts</span></li>
+                            <li class="flex justify-between border-b border-slate-100 pb-1"><span>Eggs (1 Unit):</span> <span class="font-bold">250 Pts</span></li>
+                            <li class="flex justify-between border-b border-slate-100 pb-1"><span>Noodles (1 Sachet):</span> <span class="font-bold">250 Pts</span></li>
+                            <li class="flex justify-between border-b border-slate-100 pb-1"><span>Palm Oil (1 Cup):</span> <span class="font-bold">330 Pts</span></li>
+                            <li class="flex justify-between border-b border-slate-100 pb-1"><span>Vegetable Oil (1 Cup):</span> <span class="font-bold">400 Pts</span></li>
+                        </ul>
+                        <p class="text-slate-600 text-xs">
+                            Select Redeem Reward, fill your cart, click Checkout Now, and the shop owner will hand over your fresh groceries instantly. Take your empty mesh bag back home, and repeat the cycle!
                         </p>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Leaderboard Highlight -->
-            <div class="mt-16 bg-gradient-to-r from-emerald-900 to-emerald-950 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-xl shadow-emerald-950/20">
-                <div class="absolute right-0 bottom-0 opacity-10 translate-x-10 translate-y-10">
-                    <i class="fas fa-trophy text-[200px]"></i>
-                </div>
-                <div class="relative z-10 max-w-3xl">
-                    <div class="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-300 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 border border-emerald-500/30">
-                        🏆 Leaderboard Challenge
-                    </div>
-                    <h3 class="text-2xl md:text-3xl font-black font-outfit mb-4">Climb the Neighborhood Leaderboard!</h3>
-                    <p class="text-emerald-100/90 text-sm md:text-base leading-relaxed mb-6">
-                        Every single kilogram of sachets you donate doesn't just feed your household, it keeps your neighborhood waste free. Select <strong class="text-white">Donor Leaderboard</strong> on your WhatsApp chat at any time to see where you rank among the top donors in your zone. High ranking donors get exclusive community bragging rights and a chance to win amazing cash prizes at the end of the year!
-                    </p>
-                </div>
+            <!-- Leaderboard Banner -->
+            <div class="p-8 border rounded-xl bg-slate-50 mb-12">
+                <h3 class="font-bold text-xl mb-3 flex items-center gap-2">
+                    <span>🏆</span> Climb the Neighborhood Leaderboard!
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Every single kilogram of sachets you donate doesn't just feed your household, it keeps your neighborhood waste free. Select <strong>Donor Leaderboard</strong> on your WhatsApp chat at any time to see where you rank among the top donors in your zone. High ranking donors get exclusive community bragging rights and a chance to win amazing cash prizes at the end of the year!
+                </p>
             </div>
 
-            <!-- CTA Button -->
-            <div class="mt-16 text-center">
-                <a href="map-viewer.html" class="inline-flex items-center gap-3 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-bold text-base md:text-lg hover:bg-emerald-700 hover:scale-105 active:scale-95 shadow-lg shadow-emerald-200 transition-all duration-200">
-                    <i class="fas fa-map-marker-alt text-xl"></i>
-                    <span>Find a SachetBank Terminal Near Me</span>
+            <!-- Find a SachetBank Terminal Near Me Button -->
+            <div class="text-center">
+                <a href="map" class="inline-block bg-emerald-600 text-white px-8 py-3.5 rounded-lg font-bold hover:bg-emerald-700 transition">
+                    Find a SachetBank Terminal Near Me
                 </a>
             </div>
-
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-12 bg-slate-900 text-slate-400 text-center border-t border-slate-800">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-black text-sm">S</div>
-                <span class="text-lg font-bold font-outfit text-white">SachetBank</span>
-            </div>
-            <p class="text-xs md:text-sm">
-                &copy; 2026 SachetBank Africa. Banking on a Cleaner Africa
-            </p>
-        </div>
+    <footer class="py-10 text-center text-slate-500 text-sm">
+        &copy; 2026 SachetBank Africa. Banking on a Cleaner Africa
     </footer>
 </body>
 </html>
