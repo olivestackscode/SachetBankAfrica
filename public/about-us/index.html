@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | SachetBank Africa</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans flex flex-col min-h-screen">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 md:px-10 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="text-2xl font-black text-emerald-600">
+                <a href="index.html">SachetBank</a>
+            </div>
+            
+            <!-- Right side controls (Mobile: Get Started icon/button + Hamburger, Desktop: Menu + Get Started) -->
+            <div class="flex items-center gap-3 md:gap-4">
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8 font-semibold text-slate-650 mr-4">
+                    <a href="about-us" class="text-emerald-600 transition font-bold">About Us</a>
+                    <a href="contact" class="hover:text-emerald-600 transition">Contact Us</a>
+                    <a href="map" class="hover:text-emerald-600 transition">Find Terminals</a>
+                </div>
+                
+                <!-- Get Started Button (Visible on both mobile and desktop) -->
+                <a href="https://wa.me/+15556780493" class="bg-emerald-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-full font-bold hover:bg-emerald-700 transition flex items-center gap-1.5 text-xs sm:text-sm shadow-sm whitespace-nowrap">
+                    <i class="fab fa-whatsapp text-base"></i>
+                    <span class="hidden sm:inline">Get Started</span>
+                </a>
+
+                <!-- Mobile Menu Button (Hamburger) -->
+                <button id="mobile-menu-btn" class="md:hidden text-slate-700 hover:text-emerald-600 focus:outline-none p-1" aria-label="Toggle Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 px-6 py-4 space-y-3 shadow-inner">
+            <a href="about-us.html" class="block font-semibold text-emerald-600 py-1">About Us</a>
+            <a href="contact.html" class="block font-semibold text-slate-700 hover:text-emerald-600 py-1">Contact Us</a>
+            <a href="map-viewer.html" class="block font-semibold text-slate-700 hover:text-emerald-600 py-1">Find Terminals</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-4xl mx-auto px-6 py-16">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-black mb-4">About SachetBank</h1>
+            <p class="text-xl text-slate-600">Banking on a Cleaner Africa</p>
+        </header>
+
+        <section class="space-y-12 text-slate-750 leading-relaxed">
+            <div class="p-8 border rounded-xl bg-white shadow-sm">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 text-emerald-700">
+                    <i class="fas fa-bullseye"></i> Our Mission
+                </h2>
+                <p class="text-lg">
+                    SachetBank Africa was founded to address one of the most pressing environmental challenges in African communities: plastic sachet waste. Our mission is to clean up neighborhoods by empowering residents to turn their plastic waste into tangible household value, starting with pure water sachets.
+                </p>
+            </div>
+
+            <div class="p-8 border rounded-xl bg-white shadow-sm">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 text-emerald-700">
+                    <i class="fas fa-network-wired"></i> How SachetBank Works
+                </h2>
+                <p class="mb-4">
+                    We operate a decentralized network of local node terminals hosted by neighborhood shop owners. Residents register their WhatsApp number and bring clean, dry water sachets to these terminals.
+                </p>
+                <p>
+                    Each kilogram of waste is weighed, recorded, and immediately minted into points in their digital wallet. Residents can then redeem these points at the counter for essential household food items like rice, beans, garri, and eggs.
+                </p>
+            </div>
+
+            <div class="p-8 border rounded-xl bg-white shadow-sm">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 text-emerald-700">
+                    <i class="fas fa-palette"></i> Upcycling & DunsinCrafts
+                </h2>
+                <p>
+                    We do not let this plastic end up in landfills. Through our exclusive partnership with downstream fashion house <strong>DunsinCrafts</strong>, the collected pristine sachet nylons are woven and upcycled into high-end luxury art and eco-friendly fashion. Because of this high-quality requirement, SachetBank maintains strict guidelines on only accepting clean, dry sachets.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-10 text-center text-slate-550 text-sm border-t border-slate-200 bg-white">
+        &copy; 2026 SachetBank Africa. Banking on a Cleaner Africa
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = menuBtn.querySelector('i');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            } else {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            }
+        });
+    </script>
+</body>
+</html>
