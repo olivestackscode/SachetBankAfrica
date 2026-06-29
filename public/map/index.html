@@ -45,6 +45,25 @@
             overflow: hidden;
         }
 
+        /* Back Button Styling */
+        .back-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: var(--font-outfit);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .back-home-btn:hover {
+            color: var(--accent);
+            transform: translateX(-4px);
+        }
+
         /* Sidebar Styling */
         .sidebar {
             width: 400px;
@@ -420,6 +439,9 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
+            <a href="../index.html" class="back-home-btn">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </a>
             <div class="brand">
                 <img src="https://sachet-bank-africa.vercel.app/assets/SachetBank-logo.jpeg" alt="SachetBank Logo">
                 <div>
